@@ -338,27 +338,44 @@
     box-shadow:0 2px 8px rgba(18,33,58,0.06);
   }
   .filterbar-inner{
-    max-width:1180px;margin:0 auto;padding:12px 24px 10px;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;
+    max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;gap:10px 8px;align-items:center;
   }
-  .filter-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-  .filter-label{font-size:12px;font-weight:700;color:var(--muted);margin-right:2px;}
+  .filter-group{
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+    background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:6px 10px 6px 6px;
+  }
+  .filter-label{
+    font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;
+    margin-right:2px;padding:0 4px;white-space:nowrap;
+  }
   .filter-pill{
     font-family:'Sarabun',sans-serif; font-size:12.5px;font-weight:600;color:var(--steel);
-    background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:5px 13px;
+    background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 13px;
     cursor:pointer;transition:.15s;
   }
-  .filter-pill:hover{background:#e5eaf3;}
+  .filter-pill:hover{background:#e5eaf3;border-color:#c9d2e0;}
   .filter-pill.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .filter-pill[title]{cursor:help;}
   .filter-reset{
-    font-family:'Sarabun',sans-serif;font-size:12.5px;font-weight:600;color:var(--accent);
-    background:#fff;border:1px solid var(--accent);border-radius:20px;padding:5px 14px;cursor:pointer;
-    margin-left:auto;transition:.15s;
+    font-family:'Sarabun',sans-serif;font-size:12.5px;font-weight:600;color:var(--muted);
+    background:#fff;border:1px solid var(--border);border-radius:20px;padding:6px 14px;cursor:pointer;
+    margin-left:auto;transition:.15s;display:flex;align-items:center;gap:5px;
   }
-  .filter-reset:hover{background:var(--accent);color:#fff;}
+  .filter-reset:hover{background:var(--red);color:#fff;border-color:var(--red);}
   .filterbar-status{
-    max-width:1180px;margin:0 auto;padding:0 24px 10px;font-size:12px;color:var(--muted);
+    max-width:1180px;margin:0 auto;padding:0 24px 12px;font-size:12.5px;color:var(--muted);
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
   }
   .filterbar-status b{color:var(--navy);}
+  .fs-details{font-size:11.5px;color:var(--muted);}
+  .fs-details summary{
+    cursor:pointer;color:var(--accent);font-weight:600;list-style:none;user-select:none;
+    display:inline-flex;align-items:center;gap:3px;
+  }
+  .fs-details summary::-webkit-details-marker{display:none;}
+  .fs-details summary::after{content:"\25BE";font-size:9px;transition:transform .15s;}
+  .fs-details[open] summary::after{transform:rotate(180deg);}
+  .fs-details-body{padding-top:8px;line-height:1.7;}
   .fr-section-tag{
     display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:var(--accent);
     padding:1px 7px;border-radius:10px;margin-right:6px;vertical-align:middle;
@@ -467,10 +484,17 @@
       <button class="filter-pill" data-dim="st" data-val="1">ยังไม่เริ่ม</button>
       <button class="filter-pill" data-dim="st" data-val="2">ค้าง Preparing</button>
     </div>
-    <button class="filter-reset" id="filterReset">ล้างตัวกรองทั้งหมด</button>
+    <button class="filter-reset" id="filterReset">&#8635; ล้างตัวกรอง</button>
   </div>
-  <div class="filterbar-status" id="filterStatus"><b>แสดงข้อมูลทั้งหมด</b> (@@KPI_ROWS@@ รายการ) &middot; ตัวกรองมีผลกับหมวด <span class="fr-section-tag">1</span>สรุปผู้บริหาร <span class="fr-section-tag">5</span>ปริมาณ&เวลา <span class="fr-section-tag">6</span>สถานะ&Lead Time <span class="fr-section-tag">7</span>ช่องจ่าย <span class="fr-section-tag">9</span>ลูกค้า <span class="fr-section-tag">10</span>ขนาดคำสั่งซื้อ <span class="fr-section-tag">14</span>Milk Run(เฉพาะกลุ่มผลิตภัณฑ์/โรงงาน/สถานะ ไม่รวมเดือน) &mdash; หมวดเปรียบเทียบ (2,3,4,8,11,15) แสดงภาพรวมทั้งหมดเสมอเพื่อการเปรียบเทียบ</div>
-  <div style="font-size:11px;color:var(--muted);padding:0 4px 10px;max-width:1400px;margin:0 auto;" id="monthFootnote"></div>
+  <div class="filterbar-status">
+    <span id="filterStatusMain"><b>แสดงข้อมูลทั้งหมด</b> (@@KPI_ROWS@@ รายการ)</span>
+    <details class="fs-details">
+      <summary>ตัวกรองมีผลกับหมวดใดบ้าง</summary>
+      <div class="fs-details-body">
+        <span class="fr-section-tag">1</span>สรุปผู้บริหาร <span class="fr-section-tag">5</span>ปริมาณ&เวลา <span class="fr-section-tag">6</span>สถานะ&Lead Time <span class="fr-section-tag">7</span>ช่องจ่าย <span class="fr-section-tag">9</span>ลูกค้า <span class="fr-section-tag">10</span>ขนาดคำสั่งซื้อ <span class="fr-section-tag">14</span>Milk Run (เฉพาะกลุ่มผลิตภัณฑ์/โรงงาน/สถานะ ไม่รวมเดือน)<br>หมวดเปรียบเทียบ (2, 3, 4, 8, 11, 15) แสดงภาพรวมทั้งหมดเสมอเพื่อการเปรียบเทียบ ไม่ถูกกรอง
+      </div>
+    </details>
+  </div>
 </div>
 
 <div class="wrap">
@@ -3991,12 +4015,13 @@ function updateFilterStatusText(idxs){
   const facTxt = FILTER.fac>=0 ? FAC_LIST[FILTER.fac] : null;
   const stTxt = FILTER.st>=0 ? ['เสร็จสมบูรณ์','ยังไม่เริ่ม','ค้าง Preparing'][FILTER.st] : null;
   const active = [mnTxt,pgTxt,facTxt,stTxt].filter(Boolean);
-  const el = document.getElementById('filterStatus');
-  const base = 'ตัวกรองมีผลกับหมวด <span class="fr-section-tag">1</span>สรุปผู้บริหาร <span class="fr-section-tag">5</span>ปริมาณ&เวลา <span class="fr-section-tag">6</span>สถานะ&Lead Time <span class="fr-section-tag">7</span>ช่องจ่าย <span class="fr-section-tag">9</span>ลูกค้า <span class="fr-section-tag">10</span>ขนาดคำสั่งซื้อ <span class="fr-section-tag">14</span>Milk Run(เฉพาะกลุ่มผลิตภัณฑ์/โรงงาน/สถานะ ไม่รวมเดือน) &mdash; หมวดเปรียบเทียบ (2,3,4,8,11,15) แสดงภาพรวมทั้งหมดเสมอเพื่อการเปรียบเทียบ';
+  // The "which sections are affected" explanation is now static markup (a <details> block) that
+  // doesn't need regenerating on every filter change -- only the short summary line is live.
+  const el = document.getElementById('filterStatusMain');
   if(active.length===0){
-    el.innerHTML = '<b>แสดงข้อมูลทั้งหมด</b> (' + fmtNum(idxs.length) + ' รายการ) &middot; ' + base;
+    el.innerHTML = '<b>แสดงข้อมูลทั้งหมด</b> (' + fmtNum(idxs.length) + ' รายการ)';
   } else {
-    el.innerHTML = '<b>กำลังกรอง: ' + active.join(' + ') + '</b> &mdash; พบ ' + fmtNum(idxs.length) + ' รายการ &middot; ' + base;
+    el.innerHTML = '<b>กำลังกรอง: ' + active.join(' + ') + '</b> &mdash; พบ ' + fmtNum(idxs.length) + ' รายการ';
   }
 }
 
@@ -4449,10 +4474,11 @@ async function boot() {
 
     // Build the month filter pills live from monthList (data-derived order/count), instead of
     // relying on any hardcoded HTML -- this is what keeps the pill labels and data-val indices
-    // in sync with MONTH_LIST so the filter status text always matches what was clicked.
+    // in sync with MONTH_LIST so the filter status text always matches what was clicked. Partial
+    // months get an asterisk + a hover tooltip (title attribute) explaining why, instead of a
+    // permanent footnote line taking up space under the bar.
     const monthPillsContainer = document.getElementById('monthPillsContainer');
     if (monthPillsContainer) {
-      const partialMonths = [];
       monthList.forEach((m, i) => {
         const isPartial = m._strayDays > 0 && m.firstActiveDate;
         const btn = document.createElement('button');
@@ -4460,23 +4486,15 @@ async function boot() {
         btn.dataset.dim = 'mn';
         btn.dataset.val = String(i);
         btn.textContent = m.name + (isPartial ? '*' : '');
+        if (isPartial) {
+          btn.title = `*ข้อมูลเดือน${m.name}เริ่มบันทึกจริงตั้งแต่ ${thDate(m.firstActiveDate, false)} เป็นต้นไป (ช่วงต้นเดือนเพิ่งเริ่มบันทึกในระบบ) ตัวเลขรวมของเดือนนี้จึงต่ำกว่าเดือนอื่นเพราะเป็นเดือนไม่เต็ม ไม่ใช่ปริมาณงานที่แท้จริงลดลง`;
+        }
         monthPillsContainer.appendChild(btn);
-        if (isPartial) partialMonths.push(m);
       });
       const allPill = document.getElementById('mnAllPill');
       if (allPill && monthList.length) {
         const first = monthList[0].name, last = monthList[monthList.length - 1].name;
         allPill.textContent = monthList.length > 1 ? `ทั้งหมด (${first}-${last})` : `ทั้งหมด (${first})`;
-      }
-      const footnoteEl = document.getElementById('monthFootnote');
-      if (footnoteEl) {
-        if (partialMonths.length) {
-          footnoteEl.textContent = partialMonths.map(m =>
-            `*${m.name} มีข้อมูลจริงตั้งแต่ ${thDate(m.firstActiveDate, false)} เป็นต้นไป (ช่วงต้นเดือนเพิ่งเริ่มบันทึกในระบบ) ตัวเลขรวมเดือน${m.name}จึงต่ำกว่าเดือนอื่นเพราะเป็นเดือนไม่เต็ม ไม่ใช่ปริมาณงานที่แท้จริงลดลง`
-          ).join(' ');
-        } else {
-          footnoteEl.remove();
-        }
       }
     }
 
