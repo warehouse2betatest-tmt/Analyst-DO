@@ -534,7 +534,7 @@
     <details class="fs-details">
       <summary>ตัวกรองมีผลกับหมวดใดบ้าง</summary>
       <div class="fs-details-body">
-        <span class="fr-section-tag">1</span>สรุปผู้บริหาร <span class="fr-section-tag">5</span>ปริมาณ&เวลา <span class="fr-section-tag">6</span>สถานะ&Lead Time <span class="fr-section-tag">7</span>ช่องจ่าย <span class="fr-section-tag">9</span>ลูกค้า <span class="fr-section-tag">10</span>ขนาดคำสั่งซื้อ <span class="fr-section-tag">14</span>Milk Run (เฉพาะกลุ่มผลิตภัณฑ์/โรงงาน/สถานะ ไม่รวมเดือน)<br>หมวดเปรียบเทียบ (2, 3, 4, 8, 11, 15) แสดงภาพรวมทั้งหมดเสมอเพื่อการเปรียบเทียบ ไม่ถูกกรอง
+        <span class="fr-section-tag">1</span>สรุปผู้บริหาร <span class="fr-section-tag">5</span>ปริมาณ&เวลา <span class="fr-section-tag">6</span>สถานะ&Lead Time <span class="fr-section-tag">7</span>ช่องจ่าย <span class="fr-section-tag">9</span>ลูกค้า <span class="fr-section-tag">10</span>ขนาดคำสั่งซื้อ <span class="fr-section-tag">14</span>Milk Run<br>หมวดเปรียบเทียบ (2, 3, 4, 8, 11, 15) แสดงภาพรวมทั้งหมดเสมอเพื่อการเปรียบเทียบ ไม่ถูกกรอง
       </div>
     </details>
   </div>
@@ -1257,6 +1257,11 @@
       <div class="kpi-value" id="mrKpiCancelPct">@@MR_KPI_CANCEL_PCT@@%</div>
       <div class="kpi-sub" id="mrKpiCancelSub">ของรายการขนส่งในตัวกรองปัจจุบัน</div>
     </div>
+    <div class="kpi-card steel">
+      <div class="kpi-label">เฉลี่ยจำนวนเที่ยว/วัน (ภาพรวม)</div>
+      <div class="kpi-value" id="mrKpiTripsPerDay">-</div>
+      <div class="kpi-sub" id="mrKpiTripsPerDaySub">&nbsp;</div>
+    </div>
   </div>
 
   <div class="callout q">
@@ -1298,6 +1303,15 @@
   <div class="callout info">
     <h4>รูปแบบการไหลของงาน</h4>
     <p>@@MR_FLOW_TEXT@@</p>
+  </div>
+
+  <div class="card">
+    <h3>เฉลี่ยจำนวนเที่ยว/วัน แยกตามโรงงานต้นทาง</h3>
+    <div class="card-sub">เที่ยว = จำนวน Milk Run No. ที่ไม่ซ้ำกัน &middot; หารด้วยจำนวนวันที่โรงงานนั้นมีข้อมูลจริง (ไม่ใช่จำนวนวันทั้งหมดในปฏิทิน)</div>
+    <table>
+      <thead><tr><th class="left">โรงงานต้นทาง</th><th>จำนวนเที่ยว</th><th>วันที่มีข้อมูล</th><th>เฉลี่ยเที่ยว/วัน</th></tr></thead>
+      <tbody id="tblMRTripsPerDayFac"></tbody>
+    </table>
   </div>
 
   <div class="card">
@@ -1532,26 +1546,12 @@
         </table>
       </div>
 
-      <div class="modal-section-label" id="mrcmTableLabel">รายการทั้งหมดในกลุ่มนี้</div>
+      <div class="modal-section-label">กลุ่มผลิตภัณฑ์ (กลุ่มเหล็ก) ที่ทำรายการบ่อยที่สุดในกลุ่มนี้</div>
       <div class="modal-table-wrap">
         <table>
-          <thead><tr>
-            <th class="left sortable" data-col="run" onclick="mrCmSort('run')">รอบวิ่ง<span class="sort-ic" data-sic="run"></span></th>
-            <th class="left sortable" data-col="ship" onclick="mrCmSort('ship')">ลูกค้าปลายทาง<span class="sort-ic" data-sic="ship"></span></th>
-            <th class="left sortable" data-col="route" onclick="mrCmSort('route')">เส้นทาง<span class="sort-ic" data-sic="route"></span></th>
-            <th class="sortable" data-col="weight" onclick="mrCmSort('weight')">น้ำหนัก<span class="sort-ic" data-sic="weight"></span></th>
-            <th class="sortable" data-col="tot" onclick="mrCmSort('tot')">ระยะเวลารวม<span class="sort-ic" data-sic="tot"></span></th>
-            <th class="left sortable" data-col="status" onclick="mrCmSort('status')">สถานะ<span class="sort-ic" data-sic="status"></span></th>
-          </tr></thead>
-          <tbody id="mrcmTableBody"></tbody>
+          <thead><tr><th class="left">กลุ่มเหล็ก</th><th>น้ำหนัก</th><th>จำนวน</th><th>สถานะ</th></tr></thead>
+          <tbody id="mrcmTopPg"></tbody>
         </table>
-      </div>
-      <div class="modal-pagination" id="mrcmPagination">
-        <button class="page-btn" id="mrcmFirstBtn" onclick="mrCmGoPage('first')">&laquo;</button>
-        <button class="page-btn" id="mrcmPrevBtn" onclick="mrCmGoPage(-1)">&lsaquo; ก่อนหน้า</button>
-        <span class="page-info" id="mrcmPageInfo">หน้า 1 จาก 1</span>
-        <button class="page-btn" id="mrcmNextBtn" onclick="mrCmGoPage(1)">ถัดไป &rsaquo;</button>
-        <button class="page-btn" id="mrcmLastBtn" onclick="mrCmGoPage('last')">&raquo;</button>
       </div>
       <div class="modal-note" id="mrcmNote"></div>
     </div>
@@ -1959,11 +1959,16 @@ function buildDataKeyMap(cleanedDataRows) {
 }
 
 // cleanedMRRows: array of cleanMRRow() outputs. dataKeyMap: from buildDataKeyMap(). NOW: JS Date for freshness-independent fields (none currently needed here, kept for symmetry).
-function buildMRRowsAndLookups(cleanedMRRows, dataKeyMap) {
+function buildMRRowsAndLookups(cleanedMRRows, dataKeyMap, MONTH_LIST) {
   const pgIdx = {}; PG_LIST.forEach((v, i) => pgIdx[v] = i);
   const facIdx = {}; FAC_LIST.forEach((v, i) => facIdx[v] = i);
   const statusIdx = {}; STATUS_LIST.forEach((v, i) => statusIdx[v] = i);
   const mrstatusIdx = {}; MR_STATUS_LIST.forEach((v, i) => mrstatusIdx[v] = i);
+  // MONTH_LIST is the SAME live-derived array used for Data's ROWS.mn (build_rows.js), so the two
+  // datasets share identical month indices -- this is what lets the top filter bar's month pills
+  // filter Milk Run rows too, not just Data rows. Each MR row's own "Month" sheet column (r.month)
+  // is matched against it directly.
+  const monthIdx = {}; (MONTH_LIST || []).forEach((v, i) => monthIdx[v] = i);
 
   // op_days
   const dateSet = new Set();
@@ -2003,7 +2008,7 @@ function buildMRRowsAndLookups(cleanedMRRows, dataKeyMap) {
   const gateIdx = {}; MR_GATES.forEach((v, i) => gateIdx[v] = i);
 
   const cols = {
-    ridx: [], pg: [], ofac: [], dfac: [], dst: [], mst: [], w: [], di: [], isjune: [], wk: [], ismay: [],
+    ridx: [], pg: [], ofac: [], dfac: [], dst: [], mst: [], w: [], di: [], isjune: [], wk: [], ismay: [], mn: [],
     run: [], ship: [], mat: [], ptype: [], do: [], item: [], drv: [], trk: [], trl: [], gate: [], ngate: [],
     waitmo: [], t_wts: [], t_std: [], t_dtc: [], t_cte: [], t_tot: [], t_run: [], t_handoff: [], t_e2e: [], t_wh: [],
   };
@@ -2024,6 +2029,7 @@ function buildMRRowsAndLookups(cleanedMRRows, dataKeyMap) {
     cols.isjune.push(r.date && r.date.getTime() >= new Date(2026, 5, 1).getTime() ? 1 : 0);
     cols.wk.push(r.week);
     cols.ismay.push(r.month === 'พฤษภาคม' ? 1 : 0);
+    cols.mn.push(r.month !== undefined && monthIdx[r.month] !== undefined ? monthIdx[r.month] : -1);
 
     cols.run.push(runIdx[r.milkRunNo] !== undefined ? runIdx[r.milkRunNo] : -1);
     cols.ship.push(shiptoIdx[r.shipTo] !== undefined ? shiptoIdx[r.shipTo] : -1);
@@ -3156,7 +3162,7 @@ function buildMRTokens(T, ctx) {
   T.MR_DATE_RANGE_TH = R.date_min ? `${thDate(R.date_min, false)} - ${thDate(R.date_max)}` : '-';
 
   T.MR_SECTION_DESC = `ข้อมูลการขนส่งแบบ Milk Run (รวมงานหลาย DO เข้ารอบรถเดียวกัน) พบ ${T.MR_KPI_LEGS} รายการขนส่ง (นับตาม DO/Item) ` +
-    `ถูกจัดเข้า ${T.MR_KPI_RUNS} เที่ยว/รอบวิ่งจริง ช่วง ${T.MR_DATE_RANGE_TH} (ครอบคลุมเฉพาะช่วงที่ชีท Milk Run มีข้อมูล จึงอาจไม่ตรงกับช่วงเดือนของชีท Data ทั้งหมด จึงไม่ผูกกับตัวกรองเดือนด้านบน)`;
+    `ถูกจัดเข้า ${T.MR_KPI_RUNS} เที่ยว/รอบวิ่งจริง ช่วง ${T.MR_DATE_RANGE_TH} (ครอบคลุมเฉพาะช่วงที่ชีท Milk Run มีข้อมูล ตัวกรองเดือนด้านบนมีผลกับข้อมูลส่วนนี้ด้วย)`;
 
   T.MR_CONSOLIDATION_TEXT = `1 รอบวิ่งบรรทุกเฉลี่ย ${(R.legs_per_run.mean || 0).toFixed(2)} รายการ (median ${n(R.legs_per_run.median)} รายการ, มากสุด ${R.legs_per_run.max} รายการในรอบเดียว) &mdash; ${n(R.multi_leg_runs)} จาก ${n(R.total_runs)} รอบวิ่ง ` +
     `(${R.pct_multi_leg_runs}%) เป็นการรวมหลาย DO เข้าด้วยกัน ยืนยันว่า Milk Run ถูกใช้เพื่อรวมรอบขนส่งจริง ไม่ใช่วิ่งเที่ยวเดียวต่อ DO`;
@@ -3789,11 +3795,12 @@ function cmGoPage(delta){
 const MR_N_ROWS = MRROWS.ridx.length;
 function getMRFilteredIndices(){
   const idxs = [];
-  const {pg,fac,st} = FILTER;
+  const {pg,fac,st,mn} = FILTER;
   for(let i=0;i<MR_N_ROWS;i++){
     if(pg.length && !pg.includes(MRROWS.pg[i])) continue;
     if(fac>=0 && MRROWS.ofac[i]!==fac) continue;
     if(st>=0 && MRROWS.dst[i]!==st) continue;
+    if(mn>=0 && MRROWS.mn[i]!==mn) continue;
     idxs.push(i);
   }
   return idxs;
@@ -3810,6 +3817,41 @@ function computeMRKPIs(idxs){
   const n = idxs.length;
   return { legs:n, runs:runSet.size, weight, cancel, pct_cancel: n? cancel/n*100:0,
     legs_per_run: runSet.size? n/runSet.size : 0 };
+}
+
+// Average trips/day (จำนวนเที่ยวต่อวัน) -- overall and broken down by origin factory ("ต้นทาง").
+// "เที่ยว" (trip) = a unique Milk Run No. (MRROWS.ridx), not a leg/row. The denominator is
+// "active days" -- the count of distinct dates (MRROWS.di) that actually appear in this idxs
+// subset -- rather than the calendar span, so a filter that isolates a slow factory/product
+// group isn't diluted by days where it had zero activity. Same active-day philosophy as
+// static_agg.js's avg_per_active_day for the Data sheet.
+function computeMRTripsPerDay(idxs){
+  const overallRuns = new Set(), overallDays = new Set();
+  const byFac = {}; // facIdx -> { runs:Set, days:Set }
+  idxs.forEach(i=>{
+    const run = MRROWS.ridx[i], di = MRROWS.di[i], fac = MRROWS.ofac[i];
+    if(run>=0) overallRuns.add(run);
+    if(di>=0) overallDays.add(di);
+    if(fac>=0){
+      if(!byFac[fac]) byFac[fac] = { runs:new Set(), days:new Set() };
+      if(run>=0) byFac[fac].runs.add(run);
+      if(di>=0) byFac[fac].days.add(di);
+    }
+  });
+  // round1() lives inside browser_bundle.js's IIFE and isn't exposed globally, so round inline here
+  // (filter_ui.js runs as its own separate top-level script, outside that IIFE's scope).
+  const r1 = (v) => Math.round(v * 10) / 10;
+  const overall = {
+    trips: overallRuns.size, active_days: overallDays.size,
+    avg_per_day: overallDays.size ? r1(overallRuns.size / overallDays.size) : 0,
+  };
+  const byFactory = FAC_LIST.map((name,fi)=>{
+    const v = byFac[fi];
+    if(!v) return null;
+    return { factory:name, trips:v.runs.size, active_days:v.days.size,
+      avg_per_day: v.days.size ? r1(v.runs.size / v.days.size) : 0 };
+  }).filter(Boolean).sort((a,b)=>b.trips-a.trips);
+  return { overall, byFactory };
 }
 
 function computeMRStatusDonut(idxs){
@@ -3880,7 +3922,7 @@ function computeMRTiming(idxs){
 
 function computeMRCellDetail(rowIdxs){
   const n = rowIdxs.length;
-  const dateCounts = {}; const hourCounts = {}; const typeCounts = {}; const matStats = {};
+  const dateCounts = {}; const hourCounts = {}; const typeCounts = {}; const matStats = {}; const pgStats = {};
   let weight = 0;
   const runSet = new Set();
   rowIdxs.forEach(i=>{
@@ -3896,6 +3938,12 @@ function computeMRCellDetail(rowIdxs){
       matStats[mi].legs++; matStats[mi].weight += MRROWS.w[i];
       if(MRROWS.mst[i]===0) matStats[mi].completed++;
     }
+    const pgi = MRROWS.pg[i];
+    if(pgi>=0){
+      if(!pgStats[pgi]) pgStats[pgi] = { legs:0, weight:0, completed:0 };
+      pgStats[pgi].legs++; pgStats[pgi].weight += MRROWS.w[i];
+      if(MRROWS.mst[i]===0) pgStats[pgi].completed++;
+    }
   });
   const by_date = Object.entries(dateCounts).map(([label,n])=>({label,n}));
   const by_hour = Object.entries(hourCounts).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).map(([label,n])=>({label,n}));
@@ -3907,35 +3955,13 @@ function computeMRCellDetail(rowIdxs){
   })).sort((a,b)=>b.legs-a.legs).slice(0,8);
   const topTypes = Object.entries(typeCounts).map(([k,v])=>({name:MR_PTYPE_LIST[+k], legs:v, pct: n?Math.round(v/n*1000)/10:0}))
     .sort((a,b)=>b.legs-a.legs).slice(0,5);
-  return {n, weight, trips: runSet.size, by_date, by_hour, topTypes, topMatcodes};
-}
-
-function buildMRCMDetails(rowIdxs){
-  return rowIdxs.map(i=>{
-    const di = MRROWS.di[i];
-    const dateDisp = (di>=0) ? (MR_DATE_LIST[di].slice(8,10)+'/'+MR_DATE_LIST[di].slice(5,7)) : '-';
-    const route = (MRROWS.ofac[i]>=0?FAC_LIST[MRROWS.ofac[i]]:'?') + ' \u2192 ' + (MRROWS.dfac[i]>=0?FAC_LIST[MRROWS.dfac[i]]:'?');
-    const tot = MRROWS.t_tot[i];
-    const statusName = MRROWS.mst[i]>=0 ? ['เสร็จสมบูรณ์','ยกเลิก','รับเข้าระบบ'][MRROWS.mst[i]] : '-';
-    return {
-      run: MRROWS.run[i]>=0 ? MRUNS[MRROWS.run[i]] : '-',
-      ship: MRROWS.ship[i]>=0 ? MR_SHIPTO[MRROWS.ship[i]] : '-',
-      route, dateDisp, dateSortKey: di,
-      weight: MRROWS.w[i],
-      tot: tot==null? -1 : tot, totDisp: tot==null ? '-' : (fmtNum(tot)+' นาที'),
-      status: statusName,
-    };
-  });
-}
-function mrCmComparator(col, dir){
-  const mul = dir==='asc' ? 1 : -1;
-  const s = (x,y)=> String(x).localeCompare(String(y),'th');
-  const fns = {
-    run:(a,b)=>s(a.run,b.run), ship:(a,b)=>s(a.ship,b.ship), route:(a,b)=>s(a.route,b.route),
-    weight:(a,b)=>a.weight-b.weight, tot:(a,b)=>a.tot-b.tot, status:(a,b)=>s(a.status,b.status),
-  };
-  const fn = fns[col] || fns.route;
-  return (a,b)=> mul*fn(a,b);
+  // Top product groups ("กลุ่มเหล็ก") transported in this group, joined via the Data sheet
+  // match (dataRow.productGroup -> pgIdx), same weight/completed% shape as topMatcodes.
+  const topProductGroups = Object.entries(pgStats).map(([k,v])=>({
+    name: PG_TH[PG_LIST[+k]], legs: v.legs, weight: v.weight,
+    pct_completed: v.legs ? Math.round(v.completed/v.legs*1000)/10 : 0,
+  })).sort((a,b)=>b.legs-a.legs).slice(0,8);
+  return {n, weight, trips: runSet.size, by_date, by_hour, topTypes, topMatcodes, topProductGroups};
 }
 
 // ===================== RENDER LAYER (filter-reactive charts/tables) =====================
@@ -4155,7 +4181,6 @@ function updateFilterStatusText(idxs){
 // ===================== Milk Run render layer =====================
 let CURRENT_MR_CONSOL = {};
 let CURRENT_MR_FLOW = {};
-let MR_CM_DETAILS = []; let MR_CM_SORT = {col:'route', dir:'asc'}; let MR_CM_PAGE = 1; const MR_CM_PAGESIZE = 20;
 let mrcmDateChart = null, mrcmHourChart = null;
 
 function renderMRKPIs(idxs){
@@ -4166,6 +4191,20 @@ function renderMRKPIs(idxs){
   document.getElementById('mrKpiCancelPct').textContent = k.pct_cancel.toFixed(1) + '%';
   document.getElementById('mrKpiRunsSub').textContent = 'เฉลี่ย ' + k.legs_per_run.toFixed(2) + ' รายการ/รอบ';
   document.getElementById('mrKpiCancelSub').textContent = 'ของรายการขนส่งในตัวกรองปัจจุบัน (' + fmtNum(k.cancel) + ' รายการ)';
+}
+
+function renderMRTripsPerDay(idxs){
+  const t = computeMRTripsPerDay(idxs);
+  const tpdEl = document.getElementById('mrKpiTripsPerDay');
+  if(tpdEl) tpdEl.textContent = t.overall.avg_per_day.toFixed(1);
+  const subEl = document.getElementById('mrKpiTripsPerDaySub');
+  if(subEl) subEl.textContent = fmtNum(t.overall.trips) + ' เที่ยว จาก ' + fmtNum(t.overall.active_days) + ' วันที่มีข้อมูล';
+  const tbody = document.getElementById('tblMRTripsPerDayFac');
+  if(tbody){
+    tbody.innerHTML = t.byFactory.length ? t.byFactory.map(f=>
+      '<tr><td class="left">'+f.factory+'</td><td>'+fmtNum(f.trips)+'</td><td>'+fmtNum(f.active_days)+'</td><td><b>'+f.avg_per_day.toFixed(1)+'</b></td></tr>'
+    ).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--muted);">ไม่มีข้อมูลในตัวกรองปัจจุบัน</td></tr>';
+  }
 }
 
 function renderChartMRStatus(idxs){
@@ -4266,6 +4305,7 @@ function renderMRGateTable(idxs){
 
 function renderMilkRunSection(idxs){
   renderMRKPIs(idxs);
+  renderMRTripsPerDay(idxs);
   renderChartMRStatus(idxs);
   renderChartMRWeekly(idxs);
   renderChartMRConsolidation(idxs);
@@ -4274,47 +4314,6 @@ function renderMilkRunSection(idxs){
   renderMRDriverTable(idxs);
   renderMRTruckTable(idxs);
   renderMRGateTable(idxs);
-}
-
-function renderMRCMTable(){
-  const sorted = MR_CM_DETAILS.slice().sort(mrCmComparator(MR_CM_SORT.col, MR_CM_SORT.dir));
-  const total = sorted.length;
-  const totalPages = Math.max(1, Math.ceil(total/MR_CM_PAGESIZE));
-  if(MR_CM_PAGE>totalPages) MR_CM_PAGE = totalPages;
-  if(MR_CM_PAGE<1) MR_CM_PAGE = 1;
-  const startIdx = (MR_CM_PAGE-1)*MR_CM_PAGESIZE;
-  const pageItems = sorted.slice(startIdx, startIdx+MR_CM_PAGESIZE);
-
-  const tbody = document.getElementById('mrcmTableBody');
-  tbody.innerHTML = pageItems.length ? pageItems.map(r=>
-    '<tr><td class="left">'+r.run+'</td><td class="left">'+r.ship.slice(0,34)+'</td><td class="left">'+r.route+'</td><td>'+fmtNum(r.weight)+' กก.</td><td>'+r.totDisp+'</td><td class="left">'+r.status+'</td></tr>'
-  ).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--muted);">ไม่มีรายการ</td></tr>';
-
-  document.getElementById('mrcmPageInfo').textContent = 'หน้า '+MR_CM_PAGE+' จาก '+totalPages+' (ทั้งหมด '+fmtNum(total)+' รายการ)';
-  document.getElementById('mrcmPrevBtn').disabled = MR_CM_PAGE<=1;
-  document.getElementById('mrcmFirstBtn').disabled = MR_CM_PAGE<=1;
-  document.getElementById('mrcmNextBtn').disabled = MR_CM_PAGE>=totalPages;
-  document.getElementById('mrcmLastBtn').disabled = MR_CM_PAGE>=totalPages;
-  document.querySelectorAll('#mrCellModal .sort-ic').forEach(el=>{
-    el.classList.remove('asc','desc');
-    if(el.dataset.sic === MR_CM_SORT.col) el.classList.add(MR_CM_SORT.dir);
-  });
-  document.getElementById('mrcmNote').textContent = 'คลิกหัวคอลัมน์เพื่อเรียงลำดับ · แสดง ' + MR_CM_PAGESIZE + ' รายการต่อหน้า';
-}
-function mrCmSort(col){
-  if(MR_CM_SORT.col===col){ MR_CM_SORT.dir = MR_CM_SORT.dir==='asc' ? 'desc' : 'asc'; }
-  else { MR_CM_SORT = {col, dir: (col==='weight'||col==='tot') ? 'desc' : 'asc'}; }
-  MR_CM_PAGE = 1;
-  renderMRCMTable();
-}
-function mrCmGoPage(delta){
-  const totalPages = Math.max(1, Math.ceil(MR_CM_DETAILS.length/MR_CM_PAGESIZE));
-  if(delta==='first') MR_CM_PAGE = 1;
-  else if(delta==='last') MR_CM_PAGE = totalPages;
-  else MR_CM_PAGE += delta;
-  if(MR_CM_PAGE<1) MR_CM_PAGE = 1;
-  if(MR_CM_PAGE>totalPages) MR_CM_PAGE = totalPages;
-  renderMRCMTable();
 }
 
 function openMRDetail(mode, key){
@@ -4336,6 +4335,9 @@ function openMRDetail(mode, key){
   document.getElementById('mrcmTopTypes').innerHTML = d.topMatcodes.length ? d.topMatcodes.map(m=>
     '<tr><td class="left">'+m.name.slice(0,42)+'</td><td>'+fmtNum(m.weight)+' กก.</td><td>'+fmtNum(m.legs)+'</td><td><span class="badge '+completionBadgeStyle(m.pct_completed)+'">'+m.pct_completed+'%</span></td></tr>'
   ).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--muted);">ไม่มีข้อมูล</td></tr>';
+  document.getElementById('mrcmTopPg').innerHTML = d.topProductGroups.length ? d.topProductGroups.map(g=>
+    '<tr><td class="left">'+g.name+'</td><td>'+fmtNum(g.weight)+' กก.</td><td>'+fmtNum(g.legs)+'</td><td><span class="badge '+completionBadgeStyle(g.pct_completed)+'">'+g.pct_completed+'%</span></td></tr>'
+  ).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--muted);">ไม่มีข้อมูล</td></tr>';
 
   if(mrcmDateChart) mrcmDateChart.destroy();
   if(mrcmHourChart) mrcmHourChart.destroy();
@@ -4350,12 +4352,6 @@ function openMRDetail(mode, key){
     data:{labels:d.by_hour.map(x=>x.label), datasets:[{label:'รายการ', data:d.by_hour.map(x=>x.n), backgroundColor:COLORS.accent, borderRadius:3, maxBarThickness:20}]},
     options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:16}},plugins:{legend:{display:false},datalabels:{anchor:'end',align:'top',offset:2,clip:false,color:COLORS.navy,font:{size:8.5,weight:'700'},formatter:v=>v>0?v:''}},scales:{y:{beginAtZero:true,grid:{color:'#eef1f5'},suggestedMax:safeMax(d.by_hour.map(x=>x.n),1)*1.3},x:{grid:{display:false},ticks:{font:{size:9.5}}}}}
   });
-
-  document.getElementById('mrcmTableLabel').textContent = 'รายการทั้งหมดในกลุ่มนี้ (' + fmtNum(d.n) + ' รายการ / ' + fmtNum(d.trips) + ' เที่ยว)';
-  MR_CM_DETAILS = buildMRCMDetails(rowIdxs);
-  MR_CM_SORT = {col:'route', dir:'asc'};
-  MR_CM_PAGE = 1;
-  renderMRCMTable();
 
   document.getElementById('mrCellModal').classList.add('open');
 }
@@ -4536,7 +4532,7 @@ async function boot() {
     const built = buildRowsAndLookups(cleanedData, NOW);
     const MONTH_LIST = deriveMonthList(cleanedData);
     const dataKeyMap = buildDataKeyMap(cleanedData);
-    const mrBuilt = buildMRRowsAndLookups(cleanedMR, dataKeyMap);
+    const mrBuilt = buildMRRowsAndLookups(cleanedMR, dataKeyMap, MONTH_LIST);
 
     setStatus('กำลังคำนวณตัวเลขสรุปและวิเคราะห์เชิงลึก...');
     const overview = computeOverview(cleanedData);
