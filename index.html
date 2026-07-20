@@ -590,7 +590,7 @@
     <div class="table-scroll">
     <table>
       <thead><tr><th class="left">เดือน</th><th>รายการ</th><th>ใบ DO</th><th>ปริมาณรวม</th><th>ลูกค้า</th><th>% สำเร็จ</th><th>% ยังไม่เริ่ม</th><th>% ค้าง Preparing</th><th>วันทำการ*</th><th>เฉลี่ย/วัน</th></tr></thead>
-      <tbody>@@TABLE_MONTH_SUMMARY@@</tbody>
+      <tbody id="tblMonthSummary"></tbody>
     </table>
     </div>
   <details class="calc-detail">
@@ -604,7 +604,7 @@
     <div class="table-scroll">
     <table>
       <thead><tr><th class="left">โรงงาน</th><th>เมษายน</th><th>พฤษภาคม</th><th>มิถุนายน</th></tr></thead>
-      <tbody>@@TABLE_MONTH_FACTORY@@</tbody>
+      <tbody id="tblMonthFactory"></tbody>
     </table>
     </div>
   <details class="calc-detail">
@@ -649,7 +649,7 @@
     <h3>ตารางสรุปกลุ่มผลิตภัณฑ์</h3>
     <table>
       <thead><tr><th class="left">กลุ่มผลิตภัณฑ์</th><th>รายการ</th><th>ใบ DO</th><th>ปริมาณรวม</th><th>ลูกค้า</th><th>% สำเร็จ</th><th>% ยังไม่เริ่ม</th><th>% ค้าง Preparing</th></tr></thead>
-      <tbody>@@TABLE_PRODUCT_GROUP@@</tbody>
+      <tbody id="tblProductGroup"></tbody>
     </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -698,7 +698,7 @@
     <h3>ตารางสรุปโรงงาน</h3>
     <table>
       <thead><tr><th class="left">โรงงาน</th><th class="left">ผลิตภัณฑ์หลัก</th><th>รายการ</th><th>ปริมาณรวม</th><th>% ปิดงานสำเร็จ</th></tr></thead>
-      <tbody>@@TABLE_FACTORY@@</tbody>
+      <tbody id="tblFactorySummary"></tbody>
     </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -815,7 +815,7 @@
     <div class="card-sub">คลิกตัวเลขในตารางเพื่อดู pop-up แสดงว่ารายการกลุ่มนั้นเปิดงานมาช่วงไหนบ้าง</div>
     <table>
       <thead><tr><th class="left">กลุ่มระยะเวลา</th><th>เปิด&rarr;เตรียม</th><th>เตรียม&rarr;เสร็จ</th><th>เปิด&rarr;เสร็จ (รวม)</th></tr></thead>
-      <tbody id="tblStageBuckets">@@TABLE_STAGE_BUCKETS@@</tbody>
+      <tbody id="tblStageBuckets"></tbody>
     </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -848,7 +848,7 @@
     <h3>คำสั่งซื้อที่ใช้เวลานานที่สุด 10 อันดับ (เฉพาะที่เสร็จสมบูรณ์)</h3>
     <table>
       <thead><tr><th class="left">DO</th><th class="left">ลูกค้า</th><th class="left">รหัสวัสดุ</th><th>เปิด DO</th><th>เสร็จสมบูรณ์</th><th>Lead Time</th></tr></thead>
-      <tbody id="tblWorstLT">@@TABLE_WORST_LEADTIME@@</tbody>
+      <tbody id="tblWorstLT"></tbody>
     </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -874,7 +874,7 @@
       <h3>ช่องจ่ายที่มีงานค้างมากที่สุด 8 อันดับ</h3>
       <table>
         <thead><tr><th class="left">โรงงาน</th><th class="left">ช่องจ่าย</th><th>จำนวนค้าง</th></tr></thead>
-        <tbody id="tblStuckGate">@@TABLE_STUCK_BY_GATE@@</tbody>
+        <tbody id="tblStuckGate"></tbody>
       </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -902,7 +902,7 @@
     <div class="table-scroll">
     <table>
       <thead><tr><th class="left">โรงงาน</th><th class="left">ช่องจ่าย</th><th>จำนวนรายการ</th><th>% ปิดงานสำเร็จ</th></tr></thead>
-      <tbody id="tblGatePerf">@@TABLE_GATE_PERF@@</tbody>
+      <tbody id="tblGatePerf"></tbody>
     </table>
     </div>
   <details class="calc-detail">
@@ -922,7 +922,7 @@
       <div class="chart-box"><canvas id="chartMatLongPipe"></canvas></div>
       <table style="margin-top:10px;">
         <thead><tr><th class="left">กลุ่มวัสดุย่อย</th><th>รายการ</th><th>ปริมาณ</th><th>% สำเร็จ</th></tr></thead>
-        <tbody>@@TABLE_MATFAM_LONGPIPE@@</tbody>
+        <tbody id="tblMatfamLongPipe"></tbody>
       </table>
       <details class="calc-detail">
         <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -935,7 +935,7 @@
       <div class="chart-box"><canvas id="chartMatFlatBar"></canvas></div>
       <table style="margin-top:10px;">
         <thead><tr><th class="left">กลุ่มวัสดุย่อย</th><th>รายการ</th><th>ปริมาณ</th><th>% สำเร็จ</th></tr></thead>
-        <tbody>@@TABLE_MATFAM_FLATBAR@@</tbody>
+        <tbody id="tblMatfamFlatBar"></tbody>
       </table>
       <details class="calc-detail">
         <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -950,7 +950,7 @@
       <div class="chart-box"><canvas id="chartMatBeam"></canvas></div>
       <table style="margin-top:10px;">
         <thead><tr><th class="left">กลุ่มวัสดุย่อย</th><th>รายการ</th><th>ปริมาณ</th><th>% สำเร็จ</th></tr></thead>
-        <tbody>@@TABLE_MATFAM_BEAM@@</tbody>
+        <tbody id="tblMatfamBeam"></tbody>
       </table>
       <details class="calc-detail">
         <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -962,7 +962,7 @@
       <div class="chart-box"><canvas id="chartMatLongC"></canvas></div>
       <table style="margin-top:10px;">
         <thead><tr><th class="left">กลุ่มวัสดุย่อย</th><th>รายการ</th><th>ปริมาณ</th><th>% สำเร็จ</th></tr></thead>
-        <tbody>@@TABLE_MATFAM_LONGC@@</tbody>
+        <tbody id="tblMatfamLongC"></tbody>
       </table>
       <details class="calc-detail">
         <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1006,7 +1006,7 @@
       <h3>ลูกค้า 10 อันดับแรก ตามปริมาณ</h3>
       <table>
         <thead><tr><th class="left">ลูกค้า</th><th>รายการ</th><th>ปริมาณ</th></tr></thead>
-        <tbody id="tblTopCustQty">@@TABLE_TOP_CUST_QTY@@</tbody>
+        <tbody id="tblTopCustQty"></tbody>
       </table>
     <details class="calc-detail">
       <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1017,7 +1017,7 @@
       <h3>ลูกค้า 10 อันดับแรก ตามความถี่ (จำนวนรายการ)</h3>
       <table>
         <thead><tr><th class="left">ลูกค้า</th><th>รายการ</th><th>ใบ DO</th></tr></thead>
-        <tbody id="tblTopCustLines">@@TABLE_TOP_CUST_LINES@@</tbody>
+        <tbody id="tblTopCustLines"></tbody>
       </table>
     <details class="calc-detail">
       <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1059,7 +1059,7 @@
     <h3>คำสั่งซื้อขนาดใหญ่ที่สุด 10 อันดับ (ตามจำนวนรายการ)</h3>
     <table>
       <thead><tr><th class="left">เลขที่ DO</th><th class="left">ลูกค้า</th><th>จำนวนรายการ</th></tr></thead>
-      <tbody id="tblLargestDO">@@TABLE_LARGEST_DO@@</tbody>
+      <tbody id="tblLargestDO"></tbody>
     </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1085,7 +1085,7 @@
       <h3>รายละเอียดตามกลุ่มผลิตภัณฑ์</h3>
       <table>
         <thead><tr><th class="left">กลุ่มผลิตภัณฑ์</th><th>มัดเต็ม</th><th>มัดเศษ</th><th>% มัดเศษ</th></tr></thead>
-        <tbody>@@TABLE_BUNDLE_PG@@</tbody>
+        <tbody id="tblBundlePg"></tbody>
       </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1259,7 +1259,7 @@
     <div class="card-sub">ภาพรวมทั้งหมด (ไม่ขึ้นกับตัวกรองด้านบน) &middot; เรียงตามจำนวนรายการ &middot; จาก @@MR_ROUTE_COUNT@@ เส้นทางที่พบ</div>
     <table>
       <thead><tr><th class="left">เส้นทาง</th><th>รายการ</th><th>เที่ยว</th><th>รายการ/เที่ยว</th><th class="left">สินค้าหลัก (สัดส่วนของเส้นทาง)</th></tr></thead>
-      <tbody>@@MR_ROUTE_PRODUCT_TABLE@@</tbody>
+      <tbody id="tblMRRouteProduct"></tbody>
     </table>
   </div>
   <details class="calc-detail">
@@ -1417,7 +1417,7 @@
       <h3>ลูกค้าที่ใช้ Milk Run มากที่สุด (สัดส่วนสูงสุด, ขั้นต่ำ 15 รายการ)</h3>
       <table>
         <thead><tr><th class="left">ลูกค้า</th><th>รายการทั้งหมด</th><th>ผ่าน Milk Run</th><th>%</th></tr></thead>
-        <tbody>@@CMP_TABLE_COV_CUST@@</tbody>
+        <tbody id="tblCovCust"></tbody>
       </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -1428,7 +1428,7 @@
       <h3>กลุ่มวัสดุย่อยที่ใช้ Milk Run มากที่สุด (ขั้นต่ำ 15 รายการ)</h3>
       <table>
         <thead><tr><th class="left">กลุ่มวัสดุ</th><th>รายการทั้งหมด</th><th>ผ่าน Milk Run</th><th>%</th></tr></thead>
-        <tbody>@@CMP_TABLE_COV_SUBFAM@@</tbody>
+        <tbody id="tblCovSubfam"></tbody>
       </table>
   <details class="calc-detail">
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
@@ -4471,6 +4471,42 @@ async function boot() {
 
     // Substitute the double-at-sign placeholders across the whole document body.
     substituteTokens(document.body, T);
+
+    // Table rows are populated separately, straight into each <tbody> by id, rather than through
+    // the whole-body string substitution above. Reason: a bare "@@TOKEN@@" text placeholder sitting
+    // directly inside <tbody> (not inside a <td>) gets silently "foster-parented" out of the table
+    // by the browser's HTML parser on the very first page load (HTML5 table-parsing quirk) -- so by
+    // the time substituteTokens() runs, the placeholder text has already moved to just before the
+    // <table>, and the <tr><td> rows we substitute in land outside any table context and get
+    // stripped, leaving a stray wall of unstyled text next to an empty table. Targeting the <tbody>
+    // element directly with .innerHTML sidesteps this entirely (proper "in table body" parsing).
+    const TABLE_TOKEN_MAP = {
+      tblMonthSummary: 'TABLE_MONTH_SUMMARY',
+      tblMonthFactory: 'TABLE_MONTH_FACTORY',
+      tblProductGroup: 'TABLE_PRODUCT_GROUP',
+      tblFactorySummary: 'TABLE_FACTORY',
+      tblStageBuckets: 'TABLE_STAGE_BUCKETS',
+      tblWorstLT: 'TABLE_WORST_LEADTIME',
+      tblStuckGate: 'TABLE_STUCK_BY_GATE',
+      tblGatePerf: 'TABLE_GATE_PERF',
+      tblMatfamLongPipe: 'TABLE_MATFAM_LONGPIPE',
+      tblMatfamFlatBar: 'TABLE_MATFAM_FLATBAR',
+      tblMatfamBeam: 'TABLE_MATFAM_BEAM',
+      tblMatfamLongC: 'TABLE_MATFAM_LONGC',
+      tblTopCustQty: 'TABLE_TOP_CUST_QTY',
+      tblTopCustLines: 'TABLE_TOP_CUST_LINES',
+      tblLargestDO: 'TABLE_LARGEST_DO',
+      tblBundlePg: 'TABLE_BUNDLE_PG',
+      tblMRRouteProduct: 'MR_ROUTE_PRODUCT_TABLE',
+      tblCovCust: 'CMP_TABLE_COV_CUST',
+      tblCovSubfam: 'CMP_TABLE_COV_SUBFAM',
+    };
+    Object.entries(TABLE_TOKEN_MAP).forEach(([elId, tokenKey]) => {
+      const el = document.getElementById(elId);
+      if (!el) { console.warn('Table body element not found:', elId); return; }
+      if (!(tokenKey in T)) { console.warn('Missing live table token:', tokenKey); return; }
+      el.innerHTML = String(T[tokenKey]);
+    });
 
     // Build the month filter pills live from monthList (data-derived order/count), instead of
     // relying on any hardcoded HTML -- this is what keeps the pill labels and data-val indices
