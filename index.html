@@ -1296,6 +1296,19 @@
   </div>
 
   <div class="card">
+    <h3>Matcode ที่มักถูกจัดส่งไปด้วยกันในรอบวิ่งเดียวกัน (Top 15)</h3>
+    <div class="card-sub">นับจากรอบวิ่ง (Milk Run No.) เดียวกันที่มีวัสดุทั้งสองชนิดร่วมเที่ยว &mdash; ใช้ดูโอกาสรวมออเดอร์/วางแผนโหลดร่วมกัน</div>
+    <table>
+      <thead><tr><th class="left">วัสดุ A</th><th class="left">วัสดุ B</th><th>จำนวนรอบที่ไปด้วยกัน</th></tr></thead>
+      <tbody id="tblMRMatPairs"></tbody>
+    </table>
+  </div>
+  <div class="callout info">
+    <h4>ข้อสังเกตการรวมวัสดุ</h4>
+    <p id="mrMatPairsText"></p>
+  </div>
+
+  <div class="card">
     <h3>เส้นทางขนส่งระหว่างโรงงาน (ต้นทาง &rarr; ปลายทาง)</h3>
     <div class="card-sub">ตัวเลขบน = จำนวนรายการ(Legs) &middot; ตัวเลขล่าง = จำนวนเที่ยวจริง(รอบวิ่งไม่ซ้ำ) &mdash; คลิกตัวเลขในตารางเพื่อดูรายละเอียดและสินค้าที่ขนส่ง</div>
     <div class="flow-table-wrap"><table class="flow-table" id="tblMRFlow"></table></div>
@@ -3885,6 +3898,43 @@ function computeMRConsolidation(idxs){
   return buckets;
 }
 
+// Which Matcodes are most often loaded onto the SAME Milk Run trip together (co-occurrence
+// within one Milk Run No.), among the rows currently passing the filter. For every trip with
+// 2+ distinct materials, count every unordered pair once; rank pairs by how many trips they
+// shared. Helps spot natural bundling patterns (which SKUs tend to ride together) for load
+// planning / consolidation decisions.
+function computeMRMatcodeCooccurrence(idxs, topN){
+  topN = topN || 15;
+  const byRun = {};
+  idxs.forEach(i=>{
+    const mi = MRROWS.mat[i], run = MRROWS.ridx[i];
+    if(mi<0 || run<0) return;
+    if(!byRun[run]) byRun[run] = new Set();
+    byRun[run].add(mi);
+  });
+  const runGroups = Object.values(byRun);
+  const totalTrips = runGroups.length;
+  let multiItemTrips = 0;
+  const pairCounts = {}; // "a|b" (a<b, matcode idx) -> count of trips sharing both
+  runGroups.forEach(matSet=>{
+    const mats = Array.from(matSet);
+    if(mats.length < 2) return;
+    multiItemTrips++;
+    for(let x=0; x<mats.length; x++){
+      for(let y=x+1; y<mats.length; y++){
+        const a = Math.min(mats[x],mats[y]), b = Math.max(mats[x],mats[y]);
+        const key = a+'|'+b;
+        pairCounts[key] = (pairCounts[key]||0)+1;
+      }
+    }
+  });
+  const pairs = Object.entries(pairCounts).map(([key,count])=>{
+    const [a,b] = key.split('|').map(Number);
+    return { a: MR_MATDESC[a], b: MR_MATDESC[b], count };
+  }).sort((x,y)=>y.count-x.count).slice(0,topN);
+  return { pairs, totalTrips, multiItemTrips };
+}
+
 function computeMRFlow(idxs){
   const agg = {}; const cellRows = {}; const cellRuns = {};
   idxs.forEach(i=>{
@@ -4256,6 +4306,26 @@ function renderChartMRConsolidation(idxs){
   });
 }
 
+function renderMRMatPairs(idxs){
+  const r = computeMRMatcodeCooccurrence(idxs, 15);
+  const tbody = document.getElementById('tblMRMatPairs');
+  if(tbody){
+    tbody.innerHTML = r.pairs.length ? r.pairs.map(p=>
+      '<tr><td class="left">'+p.a.slice(0,42)+'</td><td class="left">'+p.b.slice(0,42)+'</td><td><b>'+fmtNum(p.count)+'</b></td></tr>'
+    ).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--muted);">ไม่มีรอบวิ่งที่บรรทุกมากกว่า 1 ชนิดวัสดุในตัวกรองปัจจุบัน</td></tr>';
+  }
+  const textEl = document.getElementById('mrMatPairsText');
+  if(textEl){
+    if(r.pairs.length){
+      const top = r.pairs[0];
+      const pct = r.totalTrips ? (r.multiItemTrips/r.totalTrips*100).toFixed(1) : '0';
+      textEl.innerHTML = 'จาก '+fmtNum(r.totalTrips)+' รอบวิ่งในตัวกรองปัจจุบัน มี '+fmtNum(r.multiItemTrips)+' รอบ ('+pct+'%) ที่บรรทุกมากกว่า 1 ชนิดวัสดุพร้อมกัน &mdash; คู่วัสดุที่ไปด้วยกันบ่อยที่สุดคือ &ldquo;'+top.a+'&rdquo; กับ &ldquo;'+top.b+'&rdquo; (ไปด้วยกัน '+fmtNum(top.count)+' รอบ)';
+    } else {
+      textEl.textContent = 'ยังไม่มีรอบวิ่งที่บรรทุกมากกว่า 1 ชนิดวัสดุในตัวกรองปัจจุบัน จึงยังไม่มีคู่วัสดุให้วิเคราะห์';
+    }
+  }
+}
+
 function renderMRTimingStats(idxs){
   const t = computeMRTiming(idxs);
   document.getElementById('mrTWait').textContent = fmtNum(t.wts) + ' นาที';
@@ -4309,6 +4379,7 @@ function renderMilkRunSection(idxs){
   renderChartMRStatus(idxs);
   renderChartMRWeekly(idxs);
   renderChartMRConsolidation(idxs);
+  renderMRMatPairs(idxs);
   renderMRTimingStats(idxs);
   renderMRFlowTable(idxs);
   renderMRDriverTable(idxs);
