@@ -76,13 +76,10 @@
   }
   .nav-inner{
     max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:stretch;gap:2px;
-    overflow-x:auto;white-space:nowrap;
-    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.25) transparent;
+    flex-wrap:wrap;
   }
-  .nav-inner::-webkit-scrollbar{height:4px;}
-  .nav-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:4px;}
   .nav-brand{
-    display:inline-flex;align-items:center;gap:8px;padding:0 20px 0 0;margin-right:10px;
+    display:inline-flex;align-items:center;gap:8px;padding:10px 20px 10px 0;margin-right:10px;
     border-right:1px solid rgba(255,255,255,0.12);flex-shrink:0;
   }
   .nav-brand-mark{
@@ -92,23 +89,38 @@
   }
   .nav-brand-text{font-size:14.5px;font-weight:700;color:#fff;letter-spacing:.01em;line-height:1.15;}
   .nav-brand-text small{display:block;font-size:9.5px;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:.08em;text-transform:uppercase;}
-  .nav a{
-    position:relative;color:#c7d0e0;font-size:13.5px;font-weight:500;padding:14px 14px;display:inline-block;
-    transition:color .2s ease;
+
+  /* ===== Dropdown category menu (replaces the old horizontally-scrolling flat link row) ===== */
+  .nav-cat{position:relative;}
+  .nav-cat-btn{
+    appearance:none;background:none;border:none;cursor:pointer;font-family:inherit;
+    display:inline-flex;align-items:center;gap:6px;color:#c7d0e0;font-size:13.5px;font-weight:600;
+    padding:14px 14px;transition:color .2s ease,background .2s ease;
   }
-  .nav a::after{
-    content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;background:var(--accent);
-    transform:scaleX(0);transform-origin:center;transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+  .nav-cat-chev{font-size:9px;opacity:.6;transition:transform .2s ease;}
+  .nav-cat-btn:hover{color:#fff;background:rgba(255,255,255,0.04);}
+  .nav-cat.open .nav-cat-btn{color:#fff;background:rgba(255,255,255,0.06);}
+  .nav-cat.open .nav-cat-chev{transform:rotate(180deg);}
+  .nav-cat.cat-active .nav-cat-btn{color:#fff;}
+  .nav-cat.cat-active .nav-cat-btn::after{
+    content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;background:var(--accent-light);
   }
-  .nav a:hover{color:#fff;background:rgba(255,255,255,0.03);}
-  .nav a:hover::after{transform:scaleX(1);}
-  .nav a.active{color:#fff;}
-  .nav a.active::after{transform:scaleX(1);background:var(--accent-light);}
-  .nav-group-label{
-    color:rgba(255,255,255,0.38);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    padding:14px 10px 14px 18px;display:inline-flex;align-items:center;border-left:1px solid rgba(255,255,255,0.12);
+  .nav-dropdown{
+    display:none;position:absolute;top:100%;left:0;min-width:230px;
+    background:var(--navy2);border:1px solid rgba(255,255,255,0.1);border-top:none;
+    border-radius:0 0 10px 10px;box-shadow:0 14px 28px rgba(0,0,0,0.35);
+    padding:6px;grid-template-columns:repeat(2,minmax(150px,1fr));gap:1px;
+    animation:navDropIn .18s cubic-bezier(.22,.75,.32,1) both;
   }
-  .nav-group-label:first-child{border-left:none;padding-left:0;}
+  .nav-cat.open .nav-dropdown{display:grid;}
+  @keyframes navDropIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+  .nav-dropdown a{
+    position:relative;color:#c7d0e0;font-size:13px;font-weight:500;padding:9px 12px;border-radius:6px;
+    display:block;white-space:nowrap;transition:color .15s ease,background .15s ease;
+  }
+  .nav-dropdown a:hover{color:#fff;background:rgba(255,255,255,0.06);}
+  .nav-dropdown a.active{color:#fff;background:rgba(234,115,23,0.16);}
+  @media (prefers-reduced-motion:reduce){.nav-dropdown{animation:none;}}
 
   /* Scroll-reveal: cards/callouts fade + rise into view as the user scrolls (JS toggles .reveal-in) */
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,.75,.32,1);}
@@ -471,24 +483,36 @@
       <span class="nav-brand-mark">DO</span>
       <span class="nav-brand-text">Analysis DO<small>Steel Service Center</small></span>
     </span>
-    <span class="nav-group-label">Data</span>
-    <a href="#summary">สรุปผู้บริหาร</a>
-    <a href="#monthcompare">เปรียบเทียบรายเดือน</a>
-    <a href="#pgcompare">กลุ่มผลิตภัณฑ์</a>
-    <a href="#factory">โรงงาน</a>
-    <a href="#volume">ปริมาณ &amp; เวลา</a>
-    <a href="#status">สถานะ &amp; Lead Time</a>
-    <a href="#gates">ช่องจ่าย</a>
-    <a href="#materials">วัสดุ</a>
-    <a href="#customers">ลูกค้า</a>
-    <a href="#orders">ขนาดคำสั่งซื้อ</a>
-    <a href="#bundles">ประสิทธิภาพการมัด</a>
-    <a href="#anomalies">ข้อสังเกต/ตรวจสอบ</a>
-    <a href="#recommend">ข้อเสนอแนะ</a>
-    <span class="nav-group-label">Milk Run</span>
-    <a href="#milkrun">Milk Run</a>
-    <span class="nav-group-label">เปรียบเทียบ</span>
-    <a href="#compare">Data vs Milk Run</a>
+    <div class="nav-cat" data-cat="data">
+      <button class="nav-cat-btn" type="button" aria-haspopup="true" aria-expanded="false">Data <span class="nav-cat-chev">&#9662;</span></button>
+      <div class="nav-dropdown">
+        <a href="#summary">สรุปผู้บริหาร</a>
+        <a href="#monthcompare">เปรียบเทียบรายเดือน</a>
+        <a href="#pgcompare">กลุ่มผลิตภัณฑ์</a>
+        <a href="#factory">โรงงาน</a>
+        <a href="#volume">ปริมาณ &amp; เวลา</a>
+        <a href="#status">สถานะ &amp; Lead Time</a>
+        <a href="#gates">ช่องจ่าย</a>
+        <a href="#materials">วัสดุ</a>
+        <a href="#customers">ลูกค้า</a>
+        <a href="#orders">ขนาดคำสั่งซื้อ</a>
+        <a href="#bundles">ประสิทธิภาพการมัด</a>
+        <a href="#anomalies">ข้อสังเกต/ตรวจสอบ</a>
+        <a href="#recommend">ข้อเสนอแนะ</a>
+      </div>
+    </div>
+    <div class="nav-cat" data-cat="milkrun">
+      <button class="nav-cat-btn" type="button" aria-haspopup="true" aria-expanded="false">Milk Run <span class="nav-cat-chev">&#9662;</span></button>
+      <div class="nav-dropdown">
+        <a href="#milkrun">ภาพรวม Milk Run</a>
+      </div>
+    </div>
+    <div class="nav-cat" data-cat="compare">
+      <button class="nav-cat-btn" type="button" aria-haspopup="true" aria-expanded="false">เปรียบเทียบ <span class="nav-cat-chev">&#9662;</span></button>
+      <div class="nav-dropdown">
+        <a href="#compare">Data vs Milk Run</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -805,6 +829,19 @@
     <h4>วันหยุดทำการ</h4>
     <p>@@HOLIDAY_TEXT@@</p>
   </div>
+
+  <div class="card">
+    <h3>วันในสัปดาห์ที่ทำให้งานช้า/ค้างมากกว่าปกติ</h3>
+    <div class="card-sub">ต่างจากกราฟด้านบนที่ดูแค่ปริมาณ &mdash; ตารางนี้ดู Lead Time (เฉพาะงานที่เสร็จสมบูรณ์) และ % ค้างงาน แยกตามวันในสัปดาห์</div>
+    <table>
+      <thead><tr><th class="left">วัน</th><th>จำนวนรายการ</th><th>Median Lead Time</th><th>% ค้างงาน</th></tr></thead>
+      <tbody id="tblDowLeadTime"></tbody>
+    </table>
+  </div>
+  <div class="callout warn">
+    <h4>วันที่ควรจับตา</h4>
+    <p id="dowLeadTimeText"></p>
+  </div>
 </section>
 <section id="status">
   <div class="section-head"><span class="section-num">6</span><h2>สถานะคำสั่งซื้อและ Lead Time</h2></div>
@@ -900,6 +937,19 @@
     <summary><span class="calc-icon">&#128202;</span> ดูวิธีคำนวณตัวเลขนี้</summary>
     <div class="calc-body">@@CALC_S5_WORSTLT@@</div>
   </details>
+  </div>
+
+  <div class="card">
+    <h3>รายการที่ใช้เวลาผิดปกติเทียบกับกลุ่มเดียวกัน (สถิติ)</h3>
+    <div class="card-sub">ต่างจากตาราง "ช้าที่สุด 10 อันดับ" ด้านบนที่เรียงแบบรวมทุกกลุ่ม &mdash; ตารางนี้เทียบแต่ละรายการกับค่ากลาง (median) ของกลุ่มผลิตภัณฑ์+โรงงานเดียวกันเท่านั้น (peer group) จึงจับรายการที่ผิดปกติจริงๆ ได้แม่นกว่า ไม่ใช่แค่รายการที่อยู่ในกลุ่มที่ช้าโดยธรรมชาติ</div>
+    <table>
+      <thead><tr><th class="left">DO</th><th class="left">ลูกค้า</th><th class="left">กลุ่ม/โรงงาน</th><th>Lead Time</th><th>ค่ากลางกลุ่ม</th><th>สูงกว่าปกติ</th></tr></thead>
+      <tbody id="tblLTOutliers"></tbody>
+    </table>
+  </div>
+  <div class="callout q">
+    <h4>วิธีตรวจจับความผิดปกติ</h4>
+    <p id="ltOutliersText"></p>
   </div>
 
   <div class="callout warn">
@@ -1076,6 +1126,32 @@
     <h4>ลูกค้าที่มีลักษณะพิเศษ ควรตรวจสอบ</h4>
     <p>@@SPECIAL_CUSTOMER_TEXT@@</p>
   </div>
+
+  <div class="card">
+    <h3>ลูกค้าประจำ vs ลูกค้าครั้งเดียว</h3>
+    <div class="card-sub">จำแนกตามจำนวนใบ DO ที่แต่ละลูกค้าสั่งในตัวกรองปัจจุบัน (2 ใบขึ้นไป = ประจำ, 1 ใบ = ครั้งเดียว)</div>
+    <div class="grid-3">
+      <div class="kpi-card steel">
+        <div class="kpi-label">ลูกค้าประจำ</div>
+        <div class="kpi-value" id="custFreqRepeatCust">-</div>
+        <div class="kpi-sub"><span id="custFreqRepeatCustPct">-</span> ของลูกค้าทั้งหมด</div>
+      </div>
+      <div class="kpi-card steel">
+        <div class="kpi-label">ลูกค้าครั้งเดียว</div>
+        <div class="kpi-value" id="custFreqOnceCust">-</div>
+        <div class="kpi-sub">สั่งเพียง 1 ใบ DO</div>
+      </div>
+      <div class="kpi-card accent">
+        <div class="kpi-label">สัดส่วนปริมาณจากลูกค้าประจำ</div>
+        <div class="kpi-value" id="custFreqRepeatQtyPct">-</div>
+        <div class="kpi-sub"><span id="custFreqRepeatLinesPct">-</span> ของจำนวนรายการ</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout ok">
+    <h4>ความกระจุกตัวของฐานลูกค้า</h4>
+    <p id="custFreqText"></p>
+  </div>
 </section>
 
 <section id="orders">
@@ -1112,6 +1188,15 @@
     <div class="calc-body">@@CALC_S9_TABLE@@</div>
   </details>
   </div>
+
+  <div class="card">
+    <h3>ขนาดคำสั่งซื้อ vs เวลาที่ใช้ (Economies of Scale)</h3>
+    <div class="card-sub">Median Lead Time (เปิด DO &rarr; เสร็จสมบูรณ์) ของแต่ละ DO แบ่งกลุ่มตามจำนวนรายการในใบเดียวกัน &mdash; ดูว่าออเดอร์ใหญ่ใช้เวลาต่อรายการคุ้มกว่าจริงไหม</div>
+    <table>
+      <thead><tr><th class="left">ขนาด DO</th><th>จำนวน DO</th><th>Median Lead Time (ต่อ DO)</th></tr></thead>
+      <tbody id="tblOrderSizeLT"></tbody>
+    </table>
+  </div>
 </section>
 
 <section id="bundles">
@@ -1142,6 +1227,19 @@
   <div class="callout info">
     <h4>ทำไมมัดเศษถึงสูงถึง @@BUNDLE_PARTIAL_PCT@@%</h4>
     <p>@@BUNDLE_EXPLAIN_TEXT@@</p>
+  </div>
+
+  <div class="card">
+    <h3>มัดเต็ม/มัดเศษ แยกตามโรงงาน</h3>
+    <div class="card-sub">เทียบสัดส่วนมัดเต็มระหว่างโรงงาน เพื่อดูว่าความหลากหลายของคำสั่งซื้อแตกต่างกันมากน้อยแค่ไหนในแต่ละแห่ง</div>
+    <table>
+      <thead><tr><th class="left">โรงงาน</th><th>มัดเต็ม</th><th>มัดเศษ</th><th>% มัดเศษ</th></tr></thead>
+      <tbody id="tblBundleFac"></tbody>
+    </table>
+  </div>
+  <div class="callout info">
+    <h4>ความแตกต่างของสัดส่วนมัดเต็มระหว่างโรงงาน</h4>
+    <p>@@BUNDLE_FAC_TEXT@@</p>
   </div>
 </section>
 
@@ -1296,6 +1394,15 @@
   </div>
 
   <div class="card">
+    <h3>โอกาสรวมรอบที่ยังไม่ถูกใช้</h3>
+    <div class="card-sub">เส้นทางที่วิ่งบ่อย (&ge;5 เที่ยว) แต่เกือบทุกเที่ยวมีแค่ 1 รายการ (รายการ/เที่ยว &le; 1.3) &mdash; มีปริมาณพอจะลองรวมรอบเพิ่มได้</div>
+    <table>
+      <thead><tr><th class="left">เส้นทาง</th><th>จำนวนเที่ยว</th><th>รายการ/เที่ยว</th></tr></thead>
+      <tbody id="tblMRConsolOpp"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
     <h3>Matcode ที่มักถูกจัดส่งไปด้วยกันในรอบวิ่งเดียวกัน (Top 15)</h3>
     <div class="card-sub">นับจากรอบวิ่ง (Milk Run No.) เดียวกันที่มีวัสดุทั้งสองชนิดร่วมเที่ยว &mdash; ใช้ดูโอกาสรวมออเดอร์/วางแผนโหลดร่วมกัน</div>
     <table>
@@ -1316,6 +1423,15 @@
   <div class="callout info">
     <h4>รูปแบบการไหลของงาน</h4>
     <p>@@MR_FLOW_TEXT@@</p>
+  </div>
+
+  <div class="card">
+    <h3>สาเหตุการยกเลิก แยกตามเส้นทาง</h3>
+    <div class="card-sub">เฉพาะเส้นทางที่มีตัวอย่างอย่างน้อย 5 รายการ &mdash; เรียงตาม % ยกเลิกสูงสุด</div>
+    <table>
+      <thead><tr><th class="left">เส้นทาง</th><th>รายการทั้งหมด</th><th>ยกเลิก</th><th>% ยกเลิก</th></tr></thead>
+      <tbody id="tblMRCancelRoute"></tbody>
+    </table>
   </div>
 
   <div class="card">
@@ -1365,6 +1481,12 @@
         <div class="stage-chain-value" id="mrTTotal">@@MR_T_TOTAL_MED@@ นาที</div>
       </div>
     </div>
+  </div>
+
+  <div class="card">
+    <h3>แนวโน้ม Wait Pick Time รายสัปดาห์</h3>
+    <div class="card-sub">Median เวลารอรับของ (รอรับ &rarr; เริ่มขน) แยกตามสัปดาห์ &mdash; ดูว่าคิวรอรับดีขึ้นหรือแย่ลงเมื่อเทียบสัปดาห์ต่อสัปดาห์</div>
+    <div class="chart-box short"><canvas id="chartMRWaitTrend"></canvas></div>
   </div>
 
   <div class="grid-2">
@@ -1485,6 +1607,27 @@
     <p>@@CMP_CORR_TEXT@@</p>
   </div>
 
+  <div class="card">
+    <h3>เปรียบเทียบ Lead Time งานคลัง: DO ที่ใช้ Milk Run vs ไม่ใช้</h3>
+    <div class="card-sub">เทียบ median เวลาเปิด DO&rarr;เสร็จสมบูรณ์ ระหว่าง DO ที่มีรายการผ่าน Milk Run กับ DO ที่ไม่มี (ช่วงข้อมูลเดียวกับ Coverage ด้านบน)</div>
+    <div style="display:flex;gap:10px;padding-top:6px;">
+      <div style="flex:1;text-align:center;padding:14px 8px;background:var(--bg);border-radius:10px;">
+        <div class="kpi-label" style="margin-bottom:6px;">ใช้ Milk Run</div>
+        <div style="font-size:22px;font-weight:800;color:var(--accent);">@@CMP_LEAD_COMPARE_MR_MED@@</div>
+        <div class="kpi-sub">นาที (median) &middot; n=@@CMP_LEAD_COMPARE_MR_N@@</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:14px 8px;background:var(--bg);border-radius:10px;">
+        <div class="kpi-label" style="margin-bottom:6px;">ไม่ใช้ Milk Run</div>
+        <div style="font-size:22px;font-weight:800;color:var(--navy);">@@CMP_LEAD_COMPARE_NONMR_MED@@</div>
+        <div class="kpi-sub">นาที (median) &middot; n=@@CMP_LEAD_COMPARE_NONMR_N@@</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout info">
+    <h4>DO ที่ใช้ Milk Run เร็ว/ช้ากว่า DO ที่ไม่ใช้หรือไม่</h4>
+    <p>@@CMP_LEAD_COMPARE_TEXT@@</p>
+  </div>
+
   <div class="grid-2">
     <div class="card">
       <h3>ลูกค้าที่ใช้ Milk Run มากที่สุด (สัดส่วนสูงสุด, ขั้นต่ำ 15 รายการ)</h3>
@@ -1512,6 +1655,19 @@
   <div class="callout q">
     <h4>ตรวจสอบความสอดคล้องของข้อมูล</h4>
     <p>@@CMP_FACTORY_AGREE_TEXT@@</p>
+  </div>
+
+  <div class="card">
+    <h3>โอกาสขยายการใช้ Milk Run: ลูกค้าปริมาณสูงแต่ใช้ Milk Run น้อย</h3>
+    <div class="card-sub">ลูกค้าที่มีรายการ &ge;15 รายการขึ้นไป เรียงจากสัดส่วนการใช้ Milk Run ต่ำสุด</div>
+    <table>
+      <thead><tr><th class="left">ลูกค้า</th><th>รายการทั้งหมด</th><th>ปริมาณ (หน่วย)</th><th>ผ่าน Milk Run</th><th>%</th></tr></thead>
+      <tbody id="tblAdoptionOpp"></tbody>
+    </table>
+  </div>
+  <div class="callout warn">
+    <h4>ลูกค้ากลุ่มนี้คือเป้าหมายหลักในการชวนใช้ Milk Run เพิ่ม</h4>
+    <p>@@ADOPTION_OPP_TEXT@@</p>
   </div>
 </section>
 
@@ -2182,6 +2338,24 @@ function computeBundleByPg(cleanedRows) {
   });
 }
 
+// ---- Bundle efficiency by factory (same shape as computeBundleByPg, grouped by factory instead
+// of product group -- lets us see whether full/partial-bundle ratio is a product-group trait or
+// varies by which factory does the cutting) ----
+function computeBundleByFac(cleanedRows) {
+  const byFac = {};
+  cleanedRows.forEach(r => {
+    if (!r.factory) return;
+    if (!byFac[r.factory]) byFac[r.factory] = { full: 0, partial: 0 };
+    byFac[r.factory].full += (r.bundleFull || 0);
+    byFac[r.factory].partial += (r.bundlePartial || 0);
+  });
+  return FAC_LIST.filter(fac => byFac[fac]).map(fac => {
+    const v = byFac[fac];
+    const denom = v.full + v.partial;
+    return { Factory: fac, full: v.full, partial: v.partial, full_pct: denom ? round1(v.full / denom * 100) : 0 };
+  });
+}
+
 // ---- Daily trend + per-PG daily (analysis_v3_d.py), merged (chart_data_v3.py) ----
 function computeDailyMerged(cleanedRows, dateOnlyStr) {
   const byDate = {};
@@ -2297,9 +2471,37 @@ function computeCoverage(cleanedRows, cleanedMRRows) {
     covByFac.push({ fac, matched: g.filter(r => r._hasMR).length, total: g.length, pct: round1(g.filter(r => r._hasMR).length / g.length * 100) });
   });
 
+  // Does going through Milk Run correlate with a faster or slower WAREHOUSE-side process (open DO
+  // -> completed), independent of the transport itself? Reuses the same _hasMR tagging above.
+  // Scoped to the same juneRows restriction as the rest of this function for consistency.
+  const mrCompletedRows = juneRows.filter(r => r._hasMR && r.status === 'Completed' && r.ltOpenComp != null);
+  const nonMrCompletedRows = juneRows.filter(r => !r._hasMR && r.status === 'Completed' && r.ltOpenComp != null);
+  const leadCompareMR = {
+    mr_median: round1or(median(mrCompletedRows.map(r => r.ltOpenComp))), mr_n: mrCompletedRows.length,
+    nonmr_median: round1or(median(nonMrCompletedRows.map(r => r.ltOpenComp))), nonmr_n: nonMrCompletedRows.length,
+  };
+
+  // Adoption opportunity: customers with meaningful volume (>=15 rows, same threshold used
+  // elsewhere for the "top Milk Run users" table) but the LOWEST % currently routed through Milk
+  // Run -- i.e. where expanding Milk Run coverage would have the most impact.
+  const custAgg = {};
+  juneRows.forEach(r => {
+    if (!r.soldToName) return;
+    if (!custAgg[r.soldToName]) custAgg[r.soldToName] = { total: 0, matched: 0, qty: 0 };
+    custAgg[r.soldToName].total++;
+    if (r._hasMR) custAgg[r.soldToName].matched++;
+    custAgg[r.soldToName].qty += (r.qty || 0);
+  });
+  const adoptionOpportunity = Object.entries(custAgg)
+    .filter(([, v]) => v.total >= 15)
+    .map(([name, v]) => ({ name, total: v.total, qty: v.qty, matched: v.matched, pct: v.total ? round1(v.matched / v.total * 100) : 0 }))
+    .sort((a, b) => a.pct - b.pct || b.total - a.total)
+    .slice(0, 10);
+
   return {
     coverage_overall_n: covOverallN, coverage_overall_total: covOverallTotal, coverage_overall_pct: covOverallPct,
     coverage_by_pg: covByPg, coverage_by_factory: covByFac,
+    lead_compare_mr: leadCompareMR, adoption_opportunity: adoptionOpportunity,
   };
 }
 
@@ -2891,7 +3093,7 @@ function buildGateMatFamTokens(T, ctx) {
 
 // ============ Section 8/9/10: customers + bundle + order size (tokens_v3_f.py) ============
 function buildCustBundleTokens(T, ctx) {
-  const { cust, bundleByPg, overview, largestDO } = ctx;
+  const { cust, bundleByPg, bundleByFac, overview, largestDO } = ctx;
   T.TABLE_TOP_CUST_QTY = cust.top_customers_by_qty.slice(0, 10).map(c => `<tr><td class="left">${(c['Sold To Name'] || '').slice(0, 38)}</td><td>${n(c.line_items)}</td><td>${n(c.qty)}</td></tr>`).join('');
   T.TABLE_TOP_CUST_LINES = cust.top_customers_by_lines.slice(0, 10).map(c => `<tr><td class="left">${(c['Sold To Name'] || '').slice(0, 38)}</td><td>${n(c.line_items)}</td><td>${n(c.unique_DOs)}</td></tr>`).join('');
 
@@ -2916,6 +3118,19 @@ function buildCustBundleTokens(T, ctx) {
   const fbFullPct = (bundleByPg.find(b => b['Product Group'] === 'Flat Bar') || {}).full_pct;
   T.BUNDLE_EXPLAIN_TEXT = `มัดเศษ (partial bundle) สูงเป็นปกติของธุรกิจตัดเหล็กตามสั่ง (cut-to-order) เพราะลูกค้าสั่งตามความยาว/จำนวนที่ต้องการเฉพาะราย ไม่ใช่หน่วยมัดมาตรฐานจากโรงงานผลิตเหล็กต้นทาง ` +
     `Long Pipe มีสัดส่วนมัดเต็ม ${lpFullPct != null ? lpFullPct + '%' : '-'} ขณะที่ Flat Bar มีสัดส่วน ${fbFullPct != null ? fbFullPct + '%' : '-'} สอดคล้องกับลักษณะงานตัดเฉพาะขนาดที่หลากหลายกว่า`;
+
+  T.TABLE_BUNDLE_FAC = (bundleByFac || []).map(b => {
+    const partialPct = 100 - b.full_pct;
+    return `<tr><td class="left">${b.Factory}</td><td>${n(b.full)}</td><td>${n(b.partial)}</td><td><span class="badge ${partialPct >= 90 ? 'red' : 'orange'}">${n1(partialPct)}%</span></td></tr>`;
+  }).join('');
+  if (bundleByFac && bundleByFac.length) {
+    const topFullFac = bundleByFac.reduce((a, b) => (b.full_pct > a.full_pct ? b : a));
+    const lowFullFac = bundleByFac.reduce((a, b) => (b.full_pct < a.full_pct ? b : a));
+    T.BUNDLE_FAC_TEXT = `${topFullFac.Factory} มีสัดส่วนมัดเต็มสูงสุด (${n1(topFullFac.full_pct)}%) ขณะที่ ${lowFullFac.Factory} มีสัดส่วนมัดเต็มต่ำสุด (${n1(lowFullFac.full_pct)}%) &mdash; ` +
+      `ความแตกต่างระหว่างโรงงานสะท้อนความหลากหลายของขนาดคำสั่งซื้อในแต่ละโรงงาน ไม่ใช่ตัวชี้วัดประสิทธิภาพการทำงานโดยตรง`;
+  } else {
+    T.BUNDLE_FAC_TEXT = 'ยังไม่มีข้อมูลเพียงพอสำหรับวิเคราะห์มัดเต็ม/มัดเศษแยกตามโรงงาน';
+  }
 
   T.TABLE_LARGEST_DO = largestDO.slice(0, 10).map(d => `<tr><td class="left">${d['Delivery Order']}</td><td class="left">${(d.customer || '').slice(0, 36)}</td><td>${n(d.line_items)}</td></tr>`).join('');
   T.DO_MEAN = n1(overview.unique_DOs ? overview.total_rows / overview.unique_DOs : 0);
@@ -3242,6 +3457,22 @@ function buildMRTokens(T, ctx) {
     `โรงงานต้นทางที่บันทึกใน Milk Run ตรงกับโรงงานที่ระบบคลังบันทึกไว้ ${T.CMP_KPI_FACTORY_AGREE}% ของรายการที่จับคู่ได้ (n=${n(C.factory_origin_agreement_n)}) ยืนยันความสอดคล้องของข้อมูลทั้งสองระบบในระดับสูง` :
     'ยังไม่มีข้อมูลเพียงพอสำหรับตรวจสอบความสอดคล้องของโรงงานต้นทาง';
 
+  // B: Lead time comparison — DO ที่ใช้ Milk Run vs ไม่ใช้ (both within the same coverage-eligible month scope)
+  const LCM = C.lead_compare_mr || {};
+  T.CMP_LEAD_COMPARE_MR_MED = n(LCM.mr_median);
+  T.CMP_LEAD_COMPARE_MR_N = n(LCM.mr_n);
+  T.CMP_LEAD_COMPARE_NONMR_MED = n(LCM.nonmr_median);
+  T.CMP_LEAD_COMPARE_NONMR_N = n(LCM.nonmr_n);
+  if (LCM.mr_median != null && LCM.nonmr_median != null) {
+    const diff = LCM.mr_median - LCM.nonmr_median;
+    const dirWord = diff < 0 ? 'เร็วกว่า' : (diff > 0 ? 'ช้ากว่า' : 'เท่ากับ');
+    T.CMP_LEAD_COMPARE_TEXT = `DO ที่มีการขนส่งผ่าน Milk Run (n=${T.CMP_LEAD_COMPARE_MR_N}) มี median lead time งานคลัง (เปิด DO&rarr;เสร็จ) ${T.CMP_LEAD_COMPARE_MR_MED} นาที ` +
+      `ขณะที่ DO ที่ไม่ผ่าน Milk Run (n=${T.CMP_LEAD_COMPARE_NONMR_N}) อยู่ที่ ${T.CMP_LEAD_COMPARE_NONMR_MED} นาที &mdash; กลุ่มที่ใช้ Milk Run ${dirWord}${Math.abs(diff) > 0.05 ? ` ${n1(Math.abs(diff))} นาที` : ''} ` +
+      `(หมายเหตุ: เป็นความสัมพันธ์เชิงสถิติจากข้อมูลที่จับคู่ได้เท่านั้น ไม่ได้ยืนยันว่าการใช้ Milk Run เป็นสาเหตุโดยตรงของความเร็ว/ช้าที่ต่างกัน)`;
+  } else {
+    T.CMP_LEAD_COMPARE_TEXT = 'ยังไม่มีข้อมูลเพียงพอสำหรับเปรียบเทียบ Lead Time ระหว่างกลุ่มที่ใช้และไม่ใช้ Milk Run';
+  }
+
   T.MR_TRIPLEG_TEXT = `ตัวเลข <b>${T.MR_KPI_LEGS} รายการ</b> และ <b>${T.MR_KPI_RUNS} เที่ยว</b> ที่เห็นในหน้านี้ไม่ใช่ความซ้ำซ้อนของข้อมูล แต่เป็นคนละหน่วยนับ: ${T.MR_KPI_LEGS} คือจำนวน &ldquo;รายการขนส่ง&rdquo; (นับตาม DO/Item หนึ่งรายการต่อหนึ่งแถว) ` +
     `ส่วน ${T.MR_KPI_RUNS} คือจำนวน &ldquo;เที่ยว/รอบวิ่งจริง&rdquo; (นับตาม Milk Run No. ที่ไม่ซ้ำกัน) &mdash; รถหนึ่งเที่ยวบรรทุกได้หลายรายการพร้อมกัน (เฉลี่ย ${(R.legs_per_run.mean || 0).toFixed(2)} รายการ/เที่ยว) จึงทำให้ตัวเลขรายการมากกว่าจำนวนเที่ยวเสมอ ` +
     `&mdash; ตรวจสอบคู่ Delivery/DO Item ซ้ำในชีทเดียวกันแล้วพบ ${n(RT.dup_do_item_rows)} รายการ ยืนยันว่า ${T.MR_KPI_LEGS} รายการ / ${T.MR_KPI_RUNS} เที่ยว เป็นตัวเลขที่คำนวณสดจากข้อมูลปัจจุบันและตรวจสอบแล้ว`;
@@ -3255,6 +3486,15 @@ function buildMRTokens(T, ctx) {
 
   T.CMP_TABLE_COV_CUST = (C.top_coverage_customers || []).map(r => `<tr><td class="left">${r['Sold To Name']}</td><td>${n(r.total)}</td><td>${n(r.matched)}</td><td>${r.pct}%</td></tr>`).join('');
   T.CMP_TABLE_COV_SUBFAM = (C.top_coverage_subfamilies || []).map(r => `<tr><td class="left">${r.SubFamily} <span class="badge gray">${r['Product Group']}</span></td><td>${n(r.total)}</td><td>${n(r.matched)}</td><td>${r.pct}%</td></tr>`).join('');
+
+  // C: Milk Run adoption opportunity -- customers with sizable order volume but low MR usage share
+  const adoptOpp = C.adoption_opportunity || [];
+  T.TABLE_ADOPTION_OPP = adoptOpp.map(r => `<tr><td class="left">${(r.name || '').slice(0, 38)}</td><td>${n(r.total)}</td><td>${n(r.qty)}</td><td>${n(r.matched)}</td><td>${r.pct}%</td></tr>`).join('');
+  T.ADOPTION_OPP_COUNT = n(adoptOpp.length);
+  T.ADOPTION_OPP_TEXT = adoptOpp.length ?
+    `ลูกค้าที่มีปริมาณสั่งซื้อสม่ำเสมอ (&ge;15 รายการในช่วงข้อมูล) แต่สัดส่วนการใช้ Milk Run ต่ำที่สุด ${T.ADOPTION_OPP_COUNT} อันดับแรก &mdash; อันดับ 1 คือ ${(adoptOpp[0].name || '').slice(0, 38)} ` +
+    `(${n(adoptOpp[0].total)} รายการ, ${n(adoptOpp[0].qty)} หน่วย แต่ใช้ Milk Run เพียง ${adoptOpp[0].pct}%) กลุ่มลูกค้าเหล่านี้คือโอกาสหลักในการชวนใช้ Milk Run เพิ่ม เพื่อลดจำนวนเที่ยวรถเดี่ยวและต้นทุนขนส่งต่อหน่วย` :
+    'ยังไม่พบลูกค้าที่เข้าเงื่อนไขสำหรับวิเคราะห์โอกาสขยาย Milk Run (ต้องมีปริมาณสั่งซื้อ ≥15 รายการในช่วงข้อมูล)';
 
   T.MR_CALC_LEGSTRIPS_HTML = `<ol>
 <li><b>&ldquo;รายการขนส่ง (Legs)&rdquo; = ${T.MR_KPI_LEGS} รายการ</b> &mdash; นับจากจำนวนแถวข้อมูลทั้งหมดในชีท Milk Run แต่ละแถวคือการขนส่งสินค้า 1 DO/Item</li>
@@ -3302,6 +3542,7 @@ function computeAllTokens(ctx) {
   window.computeFacCompare = computeFacCompare;
   window.computeMatFamByPg = computeMatFamByPg;
   window.computeBundleByPg = computeBundleByPg;
+  window.computeBundleByFac = computeBundleByFac;
   window.computeDailyMerged = computeDailyMerged;
   window.computeMonthCompare = computeMonthCompare;
   window.computeCoverage = computeCoverage;
@@ -3330,22 +3571,68 @@ window.initNavPolish = function () {
     if (el) { byId[id] = a; sections.push(el); }
   });
 
+  // Which .nav-cat (dropdown wrapper) does this active link belong to, so the top-level category
+  // button can also show an "active" underline without the user needing to open the dropdown.
+  function catOf(link) {
+    var el = link;
+    while (el && el !== document.body) {
+      if (el.classList && el.classList.contains('nav-cat')) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+
   if ('IntersectionObserver' in window && sections.length) {
     var current = null;
+    var currentCat = null;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           var link = byId[entry.target.id];
           if (link && link !== current) {
             if (current) current.classList.remove('active');
+            if (currentCat) currentCat.classList.remove('cat-active');
             link.classList.add('active');
             current = link;
+            currentCat = catOf(link);
+            if (currentCat) currentCat.classList.add('cat-active');
           }
         }
       });
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
     sections.forEach(function (s) { io.observe(s); });
   }
+
+  // ===== Dropdown category menu wiring (Data / Milk Run / เปรียบเทียบ) =====
+  // Click a category button to toggle its dropdown; only one open at a time; closes on outside
+  // click, Escape, or picking a link inside it. Runs here (not at module top-level) because
+  // substituteTokens() rebuilds document.body.innerHTML wholesale before this point, which would
+  // discard any listeners attached earlier.
+  var cats = Array.prototype.slice.call(document.querySelectorAll('.nav-cat'));
+  function closeAllCats(except) {
+    cats.forEach(function (c) {
+      if (c === except) return;
+      c.classList.remove('open');
+      var btn = c.querySelector('.nav-cat-btn');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
+  cats.forEach(function (cat) {
+    var btn = cat.querySelector('.nav-cat-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function (evt) {
+      evt.stopPropagation();
+      var willOpen = !cat.classList.contains('open');
+      closeAllCats(willOpen ? cat : null);
+      cat.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+    cat.querySelectorAll('.nav-dropdown a').forEach(function (a) {
+      a.addEventListener('click', function () { closeAllCats(null); });
+    });
+  });
+  document.addEventListener('click', function () { closeAllCats(null); });
+  document.addEventListener('keydown', function (evt) { if (evt.key === 'Escape') closeAllCats(null); });
 
   // Light scroll-reveal: fade + slight rise for cards/callouts/KPI tiles as they enter view.
   if ('IntersectionObserver' in window) {
@@ -3662,6 +3949,27 @@ function computeCustomerStats(idxs){
   return list;
 }
 
+// Repeat customers (2+ distinct DOs in the current filter/period) vs one-time customers (exactly
+// 1 DO) -- and how much of the volume each group represents. Reuses computeCustomerStats' per-
+// customer unique_DOs count.
+function computeCustomerFrequency(idxs){
+  const stats = computeCustomerStats(idxs);
+  const r1 = (v)=>Math.round(v*10)/10;
+  let repeatCust=0, onceCust=0, repeatQty=0, onceQty=0, repeatLines=0, onceLines=0;
+  stats.forEach(c=>{
+    if(c.unique_DOs>1){ repeatCust++; repeatQty+=c.qty; repeatLines+=c.line_items; }
+    else { onceCust++; onceQty+=c.qty; onceLines+=c.line_items; }
+  });
+  const totalCust = stats.length, totalQty = repeatQty+onceQty, totalLines = repeatLines+onceLines;
+  return {
+    repeatCust, onceCust, totalCust,
+    repeatCustPct: totalCust? r1(repeatCust/totalCust*100):0,
+    onceCustPct: totalCust? r1(onceCust/totalCust*100):0,
+    repeatQtyPct: totalQty? r1(repeatQty/totalQty*100):0,
+    repeatLinesPct: totalLines? r1(repeatLines/totalLines*100):0,
+  };
+}
+
 function computeGateStats(idxs){
   const agg = {};
   idxs.forEach(i=>{
@@ -3687,12 +3995,76 @@ function computeLargestDO(idxs, n){
     .sort((a,b)=>b.line_items-a.line_items).slice(0,n);
 }
 
+// Does a bigger order (more line items per DO) take proportionally more time, or is there an
+// economy of scale? Groups completed rows by DO, buckets by item-count-per-DO, and reports the
+// median lead time (open->completed, using each DO's own median across its lines) per bucket.
+function computeOrderSizeVsLeadTime(idxs){
+  const byDO = {};
+  idxs.forEach(i=>{
+    const oi = ROWS.oi[i];
+    if(!byDO[oi]) byDO[oi] = {n:0, ltArr:[]};
+    byDO[oi].n++;
+    if(ROWS.st[i]===0 && ROWS.lc[i]!=null) byDO[oi].ltArr.push(ROWS.lc[i]);
+  });
+  const buckets = {'1':[], '2-3':[], '4-6':[], '7+':[]};
+  const bucketN = {'1':0, '2-3':0, '4-6':0, '7+':0};
+  Object.values(byDO).forEach(v=>{
+    const key = v.n===1?'1':(v.n<=3?'2-3':(v.n<=6?'4-6':'7+'));
+    bucketN[key]++;
+    if(v.ltArr.length) buckets[key].push(median(v.ltArr));
+  });
+  const order = ['1','2-3','4-6','7+'];
+  return order.map(k=>({
+    bucket: k+' รายการ/DO', n_do: bucketN[k], n_do_completed: buckets[k].length,
+    median_lt: median(buckets[k]),
+  }));
+}
+
 function fmtHM(mo){ if(mo==null||mo<0) return '-'; mo = Math.round(mo); return String(Math.floor(mo/60)%24).padStart(2,'0')+':'+String(mo%60).padStart(2,'0'); }
 function computeWorstLeadTime(idxs, n){
   const c = completedRows(idxs).filter(i=>ROWS.lc[i]!=null);
   return c.map(i=>({ do:DOS[ROWS.oi[i]], cust:CUSTOMERS[ROWS.ci[i]], mat:MATERIALS[ROWS.mi[i]],
       lc:ROWS.lc[i], di:ROWS.di[i], mo:ROWS.mo[i] }))
     .sort((a,b)=>b.lc-a.lc).slice(0,n);
+}
+
+// Statistically-flagged Lead Time outliers, relative to their own peer group (same product group
+// + factory), instead of a flat "10 slowest overall" ranking (which the existing Worst Lead Time
+// table already covers, but that mixes fast-moving and slow-moving groups together unfairly).
+// Uses a robust z-score: median + MAD (median absolute deviation), scaled by 1.4826 so MAD
+// approximates a standard deviation under normality -- avoids one huge outlier distorting the
+// threshold the way mean+stdev would. Peer groups need >=8 completed rows before flagging anything
+// (too few samples makes "peer median" meaningless).
+function computeLeadTimeOutliers(idxs, topN){
+  topN = topN || 10;
+  const groups = {};
+  completedRows(idxs).forEach(i=>{
+    if(ROWS.lc[i]==null) return;
+    const key = ROWS.pg[i]+'__'+ROWS.fac[i];
+    (groups[key]=groups[key]||[]).push(i);
+  });
+  const outliers = [];
+  let groupsChecked = 0;
+  Object.values(groups).forEach(rows=>{
+    if(rows.length < 8) return;
+    groupsChecked++;
+    const lts = rows.map(i=>ROWS.lc[i]);
+    const med = median(lts);
+    const mad = median(lts.map(v=>Math.abs(v-med))) || 1;
+    rows.forEach(i=>{
+      const lc = ROWS.lc[i];
+      const robustZ = (lc-med)/(1.4826*mad);
+      if(robustZ>3.5 && lc>med){
+        outliers.push({
+          do: DOS[ROWS.oi[i]], cust: CUSTOMERS[ROWS.ci[i]], mat: MATERIALS[ROWS.mi[i]],
+          pg: ROWS.pg[i]>=0?PG_LIST[ROWS.pg[i]]:'-', fac: ROWS.fac[i]>=0?FAC_LIST[ROWS.fac[i]]:'-',
+          lc, peer_median: med, ratio: med? Math.round(lc/med*10)/10 : 0,
+        });
+      }
+    });
+  });
+  outliers.sort((a,b)=>b.ratio-a.ratio);
+  return { outliers: outliers.slice(0,topN), n_groups_checked: groupsChecked, n_flagged: outliers.length };
 }
 
 function computeDaily(idxs){
@@ -3709,6 +4081,26 @@ function computeDow(idxs){
   const counts = [0,0,0,0,0,0,0];
   idxs.forEach(i=>{ const di=ROWS.di[i]; if(di<0) return; counts[DATE_DOW[di]]++; });
   return DOW_TH.map((label,i)=>({ label, avg: DOW_NDAYS[i]? counts[i]/DOW_NDAYS[i] : 0 }));
+}
+
+// Which day of the week actually runs SLOW/gets stuck, not just which day is busiest (computeDow
+// above only counts volume). Median lead time (open->completed) and %stuck are both computed per
+// weekday, among the currently filtered rows.
+function computeDowLeadTime(idxs){
+  const totalByDow = [0,0,0,0,0,0,0], stuckByDow = [0,0,0,0,0,0,0];
+  const ltArr = [[],[],[],[],[],[],[]];
+  idxs.forEach(i=>{
+    const di = ROWS.di[i]; if(di<0) return;
+    const dow = DATE_DOW[di];
+    totalByDow[dow]++;
+    if(ROWS.st[i]===2) stuckByDow[dow]++;
+    if(ROWS.st[i]===0 && ROWS.lc[i]!=null) ltArr[dow].push(ROWS.lc[i]);
+  });
+  return DOW_TH.map((label,i)=>({
+    label, n: totalByDow[i],
+    median_lt: median(ltArr[i]),
+    pct_stuck: totalByDow[i] ? Math.round(stuckByDow[i]/totalByDow[i]*1000)/10 : 0,
+  }));
 }
 
 function computeHourly(idxs){
@@ -3950,6 +4342,38 @@ function computeMRFlow(idxs){
   return {agg, cellRows};
 }
 
+// Which routes cancel most often (min sample size so a route with 1 leg and 1 cancel doesn't
+// dominate a "100%" ranking meaninglessly).
+function computeMRCancelBreakdown(idxs, minN, topN){
+  minN = minN || 5; topN = topN || 10;
+  const r1 = (v)=>Math.round(v*10)/10;
+  const byRoute = {};
+  idxs.forEach(i=>{
+    const o=MRROWS.ofac[i], d=MRROWS.dfac[i];
+    if(o<0||d<0) return;
+    const key = o+'__'+d;
+    if(!byRoute[key]) byRoute[key] = {o,d,n:0,cancel:0};
+    byRoute[key].n++; if(MRROWS.mst[i]===1) byRoute[key].cancel++;
+  });
+  return Object.values(byRoute).filter(v=>v.n>=minN).map(v=>({
+    route: FAC_LIST[v.o]+' → '+FAC_LIST[v.d], n:v.n, cancel:v.cancel, pct: r1(v.cancel/v.n*100),
+  })).sort((a,b)=>b.pct-a.pct).slice(0,topN);
+}
+
+// Routes that run frequently (min trip count) but almost always as a lone single-item trip
+// (legs/trip ratio close to 1) -- a signal that there's real volume on the route but it isn't
+// being consolidated the way most of the network already is. Reuses computeMRFlow's per-route
+// legs/trips aggregation.
+function computeMRConsolidationOpportunity(idxs, minTrips, maxRatio, topN){
+  minTrips = minTrips || 5; maxRatio = maxRatio || 1.3; topN = topN || 10;
+  const r1 = (v)=>Math.round(v*10)/10;
+  const {agg} = computeMRFlow(idxs);
+  return Object.values(agg).filter(v=>v.trips>=minTrips).map(v=>({
+    route: FAC_LIST[v.o]+' → '+FAC_LIST[v.d], legs:v.legs, trips:v.trips,
+    ratio: v.trips? r1(v.legs/v.trips) : 0,
+  })).filter(v=>v.ratio<=maxRatio).sort((a,b)=>b.trips-a.trips).slice(0,topN);
+}
+
 function computeMRTop(idxs, field, lookupArr, n){
   const agg = {};
   idxs.forEach(i=>{
@@ -3968,6 +4392,26 @@ function computeMRTiming(idxs){
     return median(vals);
   }
   return { wts: med('t_wts'), std: med('t_std'), dtc: med('t_dtc'), cte: med('t_cte'), tot: med('t_tot') };
+}
+
+// Median Wait Pick Time (รอรับ->เริ่มขน) per week, so trend direction is visible instead of just
+// one overall median. Grouped by (month index, week-of-month) using MRROWS.mn/wk -- both are
+// live-derived (mn added in the month-filter task), not a hardcoded May/June split, so this keeps
+// working correctly as the sheet grows past 2 months.
+function computeMRWaitTrend(idxs){
+  const byWeek = {};
+  idxs.forEach(i=>{
+    const wk = MRROWS.wk[i], mn = MRROWS.mn[i], wt = MRROWS.t_wts[i];
+    if(wk==null || mn<0 || wt==null || wt<0) return;
+    const key = mn+'__'+wk;
+    if(!byWeek[key]) byWeek[key] = {mn, wk, vals:[]};
+    byWeek[key].vals.push(wt);
+  });
+  const weeks = Object.values(byWeek).sort((a,b)=> a.mn-b.mn || a.wk-b.wk);
+  return weeks.map(w=>({
+    label: (MONTH_LIST[w.mn] ? MONTH_LIST[w.mn].slice(0,3) : '') + ' สัปดาห์ ' + w.wk,
+    median_wait: median(w.vals), n: w.vals.length,
+  }));
 }
 
 function computeMRCellDetail(rowIdxs){
@@ -4047,6 +4491,25 @@ function renderChartDow(idxs){
     data:{labels:d.map(x=>x.label), datasets:[{label:'เฉลี่ยรายการ/วัน', data:vals, backgroundColor:COLORS.steelLight, borderRadius:5, maxBarThickness:42}]},
     options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:{anchor:'end',align:'top',offset:4,clip:false,color:COLORS.navy,font:{size:11,weight:'700'},formatter:v=>v.toFixed(1)}},scales:{y:{beginAtZero:true,grid:{color:'#eef1f5'},suggestedMax:safeMax(vals)*1.22},x:{grid:{display:false}}}}
   });
+}
+
+function renderDowLeadTime(idxs){
+  const d = computeDowLeadTime(idxs);
+  const tbody = document.getElementById('tblDowLeadTime');
+  if(!tbody) return;
+  const worstIdx = d.reduce((best,cur,i)=> (cur.n>0 && cur.median_lt>(d[best]?d[best].median_lt:-1)) ? i : best, -1);
+  tbody.innerHTML = d.map((x,i)=>
+    `<tr${i===worstIdx?' style="background:rgba(214,69,80,0.06);"':''}><td class="left">${x.label}</td><td>${fmtNum(x.n)}</td><td>${x.n?(x.median_lt/60).toFixed(1)+' ชม.':'-'}</td><td>${x.n?x.pct_stuck+'%':'-'}</td></tr>`
+  ).join('');
+  const textEl = document.getElementById('dowLeadTimeText');
+  if(textEl){
+    if(worstIdx>=0){
+      const w = d[worstIdx];
+      textEl.textContent = `วัน${w.label} มี Lead Time เฉลี่ย (median) สูงสุดที่ ${(w.median_lt/60).toFixed(1)} ชั่วโมง และมีงานค้าง ${w.pct_stuck}% ของรายการวันนั้น จากทั้งหมด ${fmtNum(w.n)} รายการในตัวกรองปัจจุบัน`;
+    } else {
+      textEl.textContent = 'ยังไม่มีข้อมูลงานที่เสร็จสมบูรณ์เพียงพอในตัวกรองปัจจุบันสำหรับเปรียบเทียบ Lead Time รายวัน';
+    }
+  }
 }
 
 function renderChartHourly(idxs){
@@ -4135,6 +4598,20 @@ function renderChartGateTop(idxs){
   ).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--muted);">ไม่มีข้อมูลในตัวกรองปัจจุบัน</td></tr>';
 }
 
+function renderCustomerFrequency(idxs){
+  const f = computeCustomerFrequency(idxs);
+  const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent = val; };
+  set('custFreqRepeatCust', fmtNum(f.repeatCust));
+  set('custFreqOnceCust', fmtNum(f.onceCust));
+  set('custFreqRepeatCustPct', f.repeatCustPct+'%');
+  set('custFreqRepeatQtyPct', f.repeatQtyPct+'%');
+  set('custFreqRepeatLinesPct', f.repeatLinesPct+'%');
+  const textEl = document.getElementById('custFreqText');
+  if(textEl){
+    textEl.textContent = `จากลูกค้าทั้งหมด ${fmtNum(f.totalCust)} ราย เป็นลูกค้าประจำ (สั่งซื้อ 2 ครั้งขึ้นไป) ${fmtNum(f.repeatCust)} ราย (${f.repeatCustPct}%) แต่คิดเป็นสัดส่วนถึง ${f.repeatQtyPct}% ของปริมาณสั่งซื้อรวม และ ${f.repeatLinesPct}% ของจำนวนรายการทั้งหมดในตัวกรองปัจจุบัน`;
+  }
+}
+
 function renderChartTopCustQty(idxs){
   destroyFR('chartTopCustQty');
   const stats = computeCustomerStats(idxs).sort((a,b)=>b.qty-a.qty);
@@ -4175,6 +4652,15 @@ function renderOrdersSection(idxs){
   document.getElementById('doMax').innerHTML = (largest[0]?largest[0].line_items:0) + ' <span class="unit">รายการ</span>';
 }
 
+function renderOrderSizeVsLeadTime(idxs){
+  const buckets = computeOrderSizeVsLeadTime(idxs);
+  const tbody = document.getElementById('tblOrderSizeLT');
+  if(!tbody) return;
+  tbody.innerHTML = buckets.map(b=>
+    `<tr><td class="left">${b.bucket}</td><td>${fmtNum(b.n_do)}</td><td>${b.n_do_completed? (b.median_lt/60).toFixed(1)+' ชม.':'-'}</td></tr>`
+  ).join('');
+}
+
 function renderWorstLeadTime(idxs){
   const worst = computeWorstLeadTime(idxs, 10);
   document.getElementById('tblWorstLT').innerHTML = worst.length ? worst.map(w=>{
@@ -4189,6 +4675,22 @@ function renderWorstLeadTime(idxs){
     }
     return `<tr><td class="left">${w.do}</td><td class="left">${w.cust.slice(0,34)}</td><td class="left">${w.mat}</td><td>${openStr}</td><td>${compStr}</td><td><b>${(w.lc/1440).toFixed(1)} วัน</b></td></tr>`;
   }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--muted);">ไม่มีรายการที่เสร็จสมบูรณ์ในตัวกรองปัจจุบัน</td></tr>';
+}
+
+function renderLeadTimeOutliers(idxs){
+  const r = computeLeadTimeOutliers(idxs, 10);
+  const tbody = document.getElementById('tblLTOutliers');
+  if(tbody){
+    tbody.innerHTML = r.outliers.length ? r.outliers.map(o=>
+      `<tr><td class="left">${o.do}</td><td class="left">${o.cust.slice(0,30)}</td><td class="left">${o.pg} / ${o.fac}</td><td>${(o.lc/1440).toFixed(1)} วัน</td><td>${(o.peer_median/1440).toFixed(1)} วัน</td><td><b>${o.ratio.toFixed(1)}&times;</b></td></tr>`
+    ).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--muted);">ไม่พบรายการผิดปกติในตัวกรองปัจจุบัน (หรือกลุ่มตัวอย่างยังน้อยเกินไปที่จะวิเคราะห์)</td></tr>';
+  }
+  const textEl = document.getElementById('ltOutliersText');
+  if(textEl){
+    textEl.textContent = r.n_groups_checked
+      ? `ตรวจสอบ ${fmtNum(r.n_groups_checked)} กลุ่ม (แยกตามกลุ่มผลิตภัณฑ์+โรงงาน ที่มีตัวอย่างพอ) พบ ${fmtNum(r.n_flagged)} รายการที่ใช้เวลานานผิดปกติเทียบกับค่ากลางของกลุ่มเดียวกัน (Lead Time สูงกว่าค่ากลางกลุ่มอย่างมีนัยสำคัญทางสถิติ ไม่ใช่แค่ช้าที่สุดโดยรวม)`
+      : 'ยังไม่มีกลุ่มที่มีตัวอย่างมากพอ (ต้องการอย่างน้อย 8 รายการที่เสร็จสมบูรณ์ต่อกลุ่มผลิตภัณฑ์+โรงงาน) สำหรับการตรวจจับความผิดปกติในตัวกรองปัจจุบัน';
+  }
 }
 
 function renderKPIsAndLeadStats(idxs){
@@ -4354,6 +4856,38 @@ function renderMRFlowTable(idxs){
   document.getElementById('tblMRFlow').innerHTML = html;
 }
 
+function renderMRCancelBreakdown(idxs){
+  const rows = computeMRCancelBreakdown(idxs, 5, 10);
+  const tbody = document.getElementById('tblMRCancelRoute');
+  if(tbody){
+    tbody.innerHTML = rows.length ? rows.map(r=>
+      `<tr><td class="left">${r.route}</td><td>${fmtNum(r.n)}</td><td>${fmtNum(r.cancel)}</td><td><b>${r.pct}%</b></td></tr>`
+    ).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--muted);">ยังไม่มีเส้นทางที่มีตัวอย่างมากพอ (ขั้นต่ำ 5 รายการ) ในตัวกรองปัจจุบัน</td></tr>';
+  }
+}
+
+function renderMRWaitTrend(idxs){
+  destroyFR('mrWaitTrend');
+  const el = document.getElementById('chartMRWaitTrend');
+  if(!el) return;
+  const w = computeMRWaitTrend(idxs);
+  FR_CHARTS.mrWaitTrend = new Chart(el, {
+    type:'line',
+    data:{labels:w.map(x=>x.label), datasets:[{label:'Median Wait Pick Time (นาที)', data:w.map(x=>x.median_wait), borderColor:COLORS.accent, backgroundColor:'rgba(234,115,23,0.1)', tension:.3, fill:true, borderWidth:2, pointRadius:3, pointBackgroundColor:COLORS.accent}]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:{anchor:'end',align:'top',offset:4,clip:false,color:COLORS.navy,font:{size:10,weight:'700'},formatter:v=>fmtNum(v)}},scales:{y:{beginAtZero:true,grid:{color:'#eef1f5'},suggestedMax:safeMax(w.map(x=>x.median_wait),1)*1.25},x:{grid:{display:false},ticks:{font:{size:10}}}}}
+  });
+}
+
+function renderMRConsolidationOpportunity(idxs){
+  const rows = computeMRConsolidationOpportunity(idxs, 5, 1.3, 10);
+  const tbody = document.getElementById('tblMRConsolOpp');
+  if(tbody){
+    tbody.innerHTML = rows.length ? rows.map(r=>
+      `<tr><td class="left">${r.route}</td><td>${fmtNum(r.trips)}</td><td>${r.ratio.toFixed(1)}</td></tr>`
+    ).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--muted);">ไม่พบเส้นทางที่เข้าเกณฑ์ (ขั้นต่ำ 5 เที่ยว และรายการ/เที่ยว &le; 1.3) ในตัวกรองปัจจุบัน</td></tr>';
+  }
+}
+
 function renderMRDriverTable(idxs){
   const rows = computeMRTop(idxs, 'drv', MR_DRIVERS, 10);
   document.getElementById('tblMRDriver').innerHTML = rows.length ? rows.map(r=>
@@ -4379,9 +4913,12 @@ function renderMilkRunSection(idxs){
   renderChartMRStatus(idxs);
   renderChartMRWeekly(idxs);
   renderChartMRConsolidation(idxs);
+  renderMRConsolidationOpportunity(idxs);
   renderMRMatPairs(idxs);
   renderMRTimingStats(idxs);
+  renderMRWaitTrend(idxs);
   renderMRFlowTable(idxs);
+  renderMRCancelBreakdown(idxs);
   renderMRDriverTable(idxs);
   renderMRTruckTable(idxs);
   renderMRGateTable(idxs);
@@ -4435,14 +4972,18 @@ function applyFilters(){
   renderKPIsAndLeadStats(idxs);
   renderChartDaily(idxs);
   renderChartDow(idxs);
+  renderDowLeadTime(idxs);
   renderChartHourly(idxs);
   renderChartStatus(idxs);
   renderChartLeadBucket(idxs);
   renderChartStuckAging(idxs);
   renderChartGateTop(idxs);
   renderChartTopCustQty(idxs);
+  renderCustomerFrequency(idxs);
   renderOrdersSection(idxs);
+  renderOrderSizeVsLeadTime(idxs);
   renderWorstLeadTime(idxs);
+  renderLeadTimeOutliers(idxs);
   updateFilterStatusText(idxs);
   renderMilkRunSection(getMRFilteredIndices());
 }
@@ -4618,6 +5159,7 @@ async function boot() {
     const facCompare = computeFacCompare(cleanedData);
     const matFam = computeMatFamByPg(cleanedData);
     const bundleByPg = computeBundleByPg(cleanedData);
+    const bundleByFac = computeBundleByFac(cleanedData);
     const dailyMerged = computeDailyMerged(cleanedData, dateOnlyStr);
     const monthCompare = computeMonthCompare(cleanedData, dateOnlyStr, MONTH_LIST);
     const coverage = computeCoverage(cleanedData, cleanedMR);
@@ -4632,7 +5174,7 @@ async function boot() {
     setStatus('กำลังสร้างข้อความสรุปและตาราง...');
     const ctx = {
       overview, gate, cust, dailyDow, largestDO, leadTime, stuckAging, dq,
-      pgCompare, facCompare, matFam, bundleByPg, dailyMerged, monthCompare, coverage, extra,
+      pgCompare, facCompare, matFam, bundleByPg, bundleByFac, dailyMerged, monthCompare, coverage, extra,
       mrAnalysis, mrRoutes, NOW, monthList, cleanedRows: cleanedData,
     };
     const T = computeAllTokens(ctx);
@@ -4706,9 +5248,11 @@ async function boot() {
       tblTopCustLines: 'TABLE_TOP_CUST_LINES',
       tblLargestDO: 'TABLE_LARGEST_DO',
       tblBundlePg: 'TABLE_BUNDLE_PG',
+      tblBundleFac: 'TABLE_BUNDLE_FAC',
       tblMRRouteProduct: 'MR_ROUTE_PRODUCT_TABLE',
       tblCovCust: 'CMP_TABLE_COV_CUST',
       tblCovSubfam: 'CMP_TABLE_COV_SUBFAM',
+      tblAdoptionOpp: 'TABLE_ADOPTION_OPP',
     };
     Object.entries(TABLE_TOKEN_MAP).forEach(([elId, tokenKey]) => {
       const el = document.getElementById(elId);
